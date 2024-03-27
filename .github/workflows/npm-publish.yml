@@ -18,6 +18,10 @@ jobs:
       - run: npm ci
       - run: npm run test:angular-tools
       - run: npm run build:angular-tools
+      - name: Copy README and LICENSE to build directory
+        run: |
+          cp README.md dist/angular-tools/
+          cp LICENSE dist/angular-tools/
 
   publish-npm:
     needs: build
@@ -30,6 +34,10 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run build:angular-tools
+      - name: Copy README and LICENSE to build directory
+        run: |
+          cp README.md dist/angular-tools/
+          cp LICENSE dist/angular-tools/
       - run: npm publish --access public
         working-directory: dist/angular-tools
         env:
