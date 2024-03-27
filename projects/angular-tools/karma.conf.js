@@ -47,7 +47,13 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeWithoutSandbox: {
         base: 'Chrome',
-        flags: ['--no-sandbox', '--code-coverage']
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          '--code-coverage',
+          '--remote-debugging-port=9222'
+        ]
       }
     },
     singleRun: true,
