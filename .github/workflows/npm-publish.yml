@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm test:angular-tools
+      - run: npm run test:angular-tools
 
   publish-npm:
     needs: build
