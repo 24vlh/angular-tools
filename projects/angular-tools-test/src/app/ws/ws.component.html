@@ -1,0 +1,63 @@
+<h1>WebSockets</h1>
+
+<p>Local mock server is a dependency to this example.</p>
+
+<p>
+  Start the server by running <code>npm run start:ws</code> in the root of the
+  project.
+</p>
+
+<p>
+  Connected:
+  <span
+    [ngClass]="{ 'text-bg-success': connected, 'text-bg-danger': !connected }"
+    class="badge"
+    >{{ connected }}</span
+  >
+  Subscribed:
+  <span
+    [ngClass]="{
+      'text-bg-success': !!subscription,
+      'text-bg-danger': !subscription
+    }"
+    class="badge"
+    >{{ !!subscription }}</span
+  >
+</p>
+
+<div>
+  <button
+    (click)="start()"
+    class="btn btn-light btn-sm border-dark"
+    type="button"
+  >
+    Start
+  </button>
+  <button
+    (click)="stop()"
+    class="btn btn-light btn-sm border-dark ms-1"
+    type="button"
+  >
+    Stop
+  </button>
+  <button
+    (click)="connect()"
+    class="btn btn-light btn-sm border-dark ms-1"
+    type="button"
+  >
+    Connect
+  </button>
+  <button
+    (click)="disconnect()"
+    class="btn btn-light btn-sm border-dark ms-1"
+    type="button"
+  >
+    Disconnect
+  </button>
+</div>
+
+<ul *ngIf="items.length" class="list-group mt-2">
+  <li *ngFor="let item of items" class="list-group-item">
+    {{ item['content'] }}
+  </li>
+</ul>

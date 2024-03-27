@@ -1,0 +1,25 @@
+<nav
+  class="navbar navbar-expand bg-dark border-bottom border-body"
+  data-bs-theme="dark"
+>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img [height]="40" [src]="logoBase64" [width]="40" alt="logo" />
+      Angular Tools
+    </a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/ws">WebSockets</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/sse">Server Sent Events</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/store">Redux Store</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet />
+</div>

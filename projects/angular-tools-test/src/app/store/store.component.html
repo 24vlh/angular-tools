@@ -1,0 +1,81 @@
+<h1>Redux Store</h1>
+
+<div class="mt-4">
+  <button (click)="store.reset()" class="btn btn-danger btn-sm" type="button">
+    Reset
+  </button>
+  <button
+    (click)="replaceState()"
+    class="btn btn-light btn-sm border-dark ms-1"
+    type="button"
+  >
+    Replace State
+  </button>
+  <button
+    (click)="replaceName()"
+    class="btn btn-light btn-sm border-dark ms-1"
+    type="button"
+  >
+    Replace Name
+  </button>
+</div>
+
+<div class="row mt-4">
+  <div class="col">
+    <p>Reactive content</p>
+
+    <code>
+      <pre>{{ store.map$ | async | json }}</pre>
+    </code>
+  </div>
+  <div class="col">
+    <p>
+      Content on demand
+      <button (click)="state()" class="btn btn-success btn-sm" type="button">
+        Get State
+      </button>
+    </p>
+
+    <code>
+      <pre>{{ content | json }}</pre>
+    </code>
+  </div>
+</div>
+
+<div class="mt-2">
+  <table class="table" style="max-width: 400px">
+    <thead>
+      <tr>
+        <th scope="col">Path</th>
+        <th scope="col">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td>
+          <code>{{ (store.select$('name') | async) || 'null' }}</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>object.key</code></td>
+        <td>
+          <code>{{ (store.selectIn$('object.key') | async) || 'null' }}</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>object.key2</code></td>
+        <td>
+          <code>{{
+            (store.selectIn$(
+              'object.key2',
+              undefined,
+              undefined,
+              'path not set'
+            ) | async) || 'null'
+          }}</code>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
