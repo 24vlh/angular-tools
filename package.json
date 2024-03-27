@@ -16,7 +16,6 @@
     "lint:angular-tools": "npx eslint projects/angular-tools/src/**/*.{ts,html} --fix",
     "ng": "ng",
     "prepare": "husky install",
-    "prepublishOnly": "npm run build:angular-tools",
     "prettify:angular-tools": "npx prettier projects/angular-tools/src/**/*.{ts,html} --write",
     "start": "ng serve --poll=1000",
     "start:ws": "ts-node projects/angular-tools-test/src/assets/websocket-server.ts",
