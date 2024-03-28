@@ -17,6 +17,10 @@ import { FactoryProvider, InjectionToken } from '@angular/core';
  * @param {WebsocketEventObserver | null} closeEventObserver - The observer for close events. Optional.
  *
  * @returns {FactoryProvider} - The created provider.
+ * @example
+ *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080')]
+ *  // => Provides the websocket worker.
+ *  // => The websocket worker is used to manage the websocket connection.
  */
 export const WEBSOCKET_PROVIDER_FACTORY = <M>(
   urlOrWebSocketSubjectConfig: string | WebSocketSubjectConfig<M>,

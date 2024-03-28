@@ -381,6 +381,8 @@ export class StoreWorker<T extends Record<string, unknown>> {
    * Resets the store to its initial state.
    *
    * @returns {void}
+   * @example
+   *  store.reset();
    */
   public reset(): void {
     this.state$.next(this.initialState);
@@ -391,6 +393,8 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *
    * @param {T} state - The state to reset the store to.
    * @returns {void}
+   * @example
+   *  store.resetWithState(state);
    */
   public resetWithState(state: T): void {
     this.state$.next(state);

@@ -10,6 +10,20 @@ import {
 /**
  * `IntersectionObserverDirective` is a directive that implements the Intersection Observer API.
  * It emits an event each time the host element intersects with the viewport.
+ *
+ * @export
+ * @class IntersectionObserverDirective
+ * @implements {OnInit}
+ * @implements {OnDestroy}
+ * @example
+ *  <div vlhIntersectionObserver (intersection)="onIntersection($event)"></div>
+ *  // => The IntersectionObserverDirective is applied to the div element.
+ *  // => The onIntersection method is called each time the div element intersects with the viewport.
+ *  // => The event object is passed to the onIntersection method.
+ *  // => The event object contains information about the intersection.
+ *  // => The IntersectionObserverDirective is a standalone directive.
+ *  // => The IntersectionObserverDirective is used to implement the Intersection Observer API.
+ *  // => The IntersectionObserverDirective emits an event each time the host element intersects with the viewport.
  */
 @Directive({
   selector: '[vlhIntersectionObserver]',

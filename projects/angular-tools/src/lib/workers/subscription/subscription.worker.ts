@@ -7,7 +7,10 @@ import { NotEmptyArray, OfObjectType } from '@24vlh/ts-assert';
  * It provides methods to add, map, and unsubscribe from subscriptions.
  * It also provides methods to manage mapped subscriptions.
  *
- * @class
+ * @example
+ *  new SubscriptionWorker();
+ *  // => Creates a subscription worker.
+ *  // => The subscription worker gets subscriptions.
  */
 @Injectable({
   providedIn: 'any'
@@ -63,7 +66,7 @@ export class SubscriptionWorker {
    * @param {...SubscriptionLike[]} subs - The subscriptions to be added.
    * @returns {void}
    * @example
-   *  add(sub1, sub2);
+   *  subscriptionWorker.add(sub1, sub2);
    *  // => Adds the subscriptions to the subs array.
    */
   add(...subs: SubscriptionLike[]): void {
@@ -82,7 +85,7 @@ export class SubscriptionWorker {
    *
    * @returns {void}
    * @example
-   *  unsubscribe();
+   *  subscriptionWorker.unsubscribe();
    *  // => Unsubscribes from all subscriptions.
    */
   unsubscribe(): void {
@@ -99,7 +102,7 @@ export class SubscriptionWorker {
    * @param {SubscriptionLike} sub - The subscription to be mapped.
    * @returns {void}
    * @example
-   *  map('key', sub);
+   *  subscriptionWorker.map('key', sub);
    *  // => Maps the subscription to the mappedSubs map.
    */
   map(key: string, sub: SubscriptionLike): void {
@@ -114,7 +117,7 @@ export class SubscriptionWorker {
    * @param {string} key - The key of the mapped subscription.
    * @returns {void}
    * @example
-   *  unsubscribeMapped('key');
+   *  subscriptionWorker.unsubscribeMapped('key');
    *  // => Unsubscribes from the mapped subscription.
    */
   unsubscribeMapped(key: string): void {
@@ -130,7 +133,7 @@ export class SubscriptionWorker {
    *
    * @returns {void}
    * @example
-   *  unsubscribeAllMapped();
+   *  subscriptionWorker.unsubscribeAllMapped();
    *  // => Unsubscribes from all mapped subscriptions.
    */
   unsubscribeAllMapped(): void {
@@ -147,7 +150,7 @@ export class SubscriptionWorker {
    * @param {unknown} sub - The subscription to be checked.
    * @returns {sub is SubscriptionLike} - Returns true if the subscription is not managed, false otherwise.
    * @example
-   *  UnmanagedSubscription(sub);
+   *  subscriptionWorker.UnmanagedSubscription(sub);
    *  // => Returns true if the subscription is not managed.
    */
   UnmanagedSubscription = (sub: unknown): sub is SubscriptionLike => {
@@ -160,10 +163,10 @@ export class SubscriptionWorker {
    * @param {unknown} sub - The subscription to be checked.
    * @returns {sub is SubscriptionLike} - Returns true if the subscription is of type SubscriptionLike, false otherwise.
    * @example
-   *  OfSubscriptionLikeType(sub);
+   *  subscriptionWorker.OfSubscriptionLikeType(sub);
    *  // => Returns true if the subscription is of type SubscriptionLike.
    */
-  private OfSubscriptionLikeType = (sub: unknown): sub is SubscriptionLike => {
+  OfSubscriptionLikeType = (sub: unknown): sub is SubscriptionLike => {
     return (
       OfObjectType<SubscriptionLike>(sub) &&
       typeof sub.unsubscribe === 'function'
@@ -177,10 +180,10 @@ export class SubscriptionWorker {
    * @param {unknown} sub - The subscription to be checked.
    * @returns {boolean} - Returns true if the subscription is not mapped, false otherwise.
    * @example
-   *  UnmappedSubscription(sub);
+   *  subscriptionWorker.UnmappedSubscription(sub);
    *  // => Returns true if the subscription is not mapped.
    */
-  private UnmappedSubscription = (sub: unknown): boolean => {
+  UnmappedSubscription = (sub: unknown): boolean => {
     return (
       this.OfSubscriptionLikeType(sub) &&
       Array.from(this.mappedSubs.values()).every(
@@ -197,10 +200,10 @@ export class SubscriptionWorker {
    * @param {SubscriptionLike} sub - The subscription to be unsubscribed.
    * @returns {void}
    * @example
-   *  Unsubscribe(sub);
+   *  subscriptionWorkerUnsubscribe(sub);
    *  // => Unsubscribes from the subscription.
    */
-  private Unsubscribe = (sub: SubscriptionLike): void => {
+  Unsubscribe = (sub: SubscriptionLike): void => {
     try {
       sub.unsubscribe();
     } catch (error: unknown) {

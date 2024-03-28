@@ -9,6 +9,20 @@
  * @param [initialDelay=1000] - The initial delay in milliseconds before the first retry.
  * @param [maxDelay='2 * 60 * 1000'] - The maximum delay in milliseconds between retries.
  * @returns {(reset?: boolean) => void} - A function that when called, will initiate a retry or reset the retry count.
+ * @example
+ *  TimeoutBackoff(
+ *   () => console.log('Retry'),
+ *   () => console.log('Error'),
+ *   3,
+ *   1000,
+ *   2 * 60 * 1000
+ *  );
+ *  // => Returns a function that will initiate a retry or reset the retry count.
+ *  // => The retryCallback is the callback to be called on each retry.
+ *  // => The errorCallback is the callback to be called when the maximum number of retries is exceeded.
+ *  // => The maximum number of retries is 3.
+ *  // => The initial delay is 1000 milliseconds.
+ *  // => The maximum delay is 2 minutes.
  */
 export function TimeoutBackoff(
   retryCallback: () => void,

@@ -66,6 +66,10 @@ export class WebsocketWorker<M> {
    *
    * @template M - The type of the message.
    * @return {WebSocketSubject<M>} The WebSocketSubject for the websocket connection.
+   * @example
+   *  websocketWorker.WebsocketConnection;
+   *  // => Returns the WebSocketSubject for the websocket connection.
+   *  // => The WebSocketSubject is used to send messages over the websocket connection.
    */
   get WebsocketConnection(): WebSocketSubject<M> {
     return this.websocketConnection;
@@ -75,6 +79,10 @@ export class WebsocketWorker<M> {
    * Get the Subscription for the websocket connection.
    *
    * @return {Subscription | null} The Subscription for the websocket connection.
+   * @example
+   *  websocketWorker.WebsocketSubscription;
+   *  // => Returns the Subscription for the websocket connection.
+   *  // => The Subscription is used to unsubscribe from the websocket connection.
    */
   get WebsocketSubscription(): Subscription | null {
     return this.websocketSubscription;
@@ -85,6 +93,10 @@ export class WebsocketWorker<M> {
    *
    * @template M - The type of the message.
    * @return {Subject<M>} The Subject for the messages.
+   * @example
+   *  websocketWorker.MessagesSubject;
+   *  // => Returns the Subject for the messages.
+   *  // => The Subject is used to send messages over the websocket connection.
    */
   get MessagesSubject(): Subject<M> {
     return this.messagesSubject;
@@ -94,6 +106,9 @@ export class WebsocketWorker<M> {
    * Check if the websocket connection is disconnected.
    *
    * @return {boolean} True if the websocket connection is disconnected, false otherwise.
+   * @example
+   *  websocketWorker.isDisconnected;
+   *  // => Returns true if the websocket connection is disconnected.
    */
   get isDisconnected(): boolean {
     return this.WebsocketConnection.closed;
@@ -115,6 +130,10 @@ export class WebsocketWorker<M> {
    * @template M - The type of the message.
    * @return {string | WebSocketSubjectConfig<M>} The URL or WebSocketSubjectConfig for the websocket connection.
    * @throws {Error} If the WebSocketSubjectConfig is not an object.
+   * @example
+   *  websocketWorker.UrlOrWebSocketSubjectConfig;
+   *  // => Returns the URL or WebSocketSubjectConfig for the websocket connection.
+   *  // => The URL or WebSocketSubjectConfig is used to configure the websocket connection.
    */
   get UrlOrWebSocketSubjectConfig(): string | WebSocketSubjectConfig<M> {
     if (OfStringType(this.urlOrWebSocketSubjectConfig)) {
@@ -153,6 +172,11 @@ export class WebsocketWorker<M> {
    *
    * @template M - The type of the message.
    * @param {M} data - The message to send.
+   * @return {void}
+   * @example
+   *  websocketWorker.send({ message: 'Hello, World!' });
+   *  // => Sends the message over the websocket connection.
+   *  // => The message is sent to the server.
    */
   send(data: M): void {
     this.WebsocketConnection.next(data);
@@ -165,6 +189,10 @@ export class WebsocketWorker<M> {
    * @template R - The type of the message to listen for.
    * @param {...(OperatorFunction<M, R> | MonoTypeOperatorFunction<M> | MonoTypeOperatorFunction<R>)[]} operators - The operators to use when listening for messages.
    * @return {Observable<M | R>} An Observable of the messages.
+   * @example
+   *  websocketWorker.listen();
+   *  // => An Observable of the messages.
+   *  // => The Observable is used to listen for messages over the websocket connection.
    */
   listen<R>(
     ...operators: (
@@ -184,6 +212,10 @@ export class WebsocketWorker<M> {
    * @param {(data: M) => boolean} filterCallback - The callback to use when picking a message.
    * @param {...(OperatorFunction<M, R> | MonoTypeOperatorFunction<M> | MonoTypeOperatorFunction<R>)[]} operators - The operators to use when picking a message.
    * @return {Observable<M | R>} An Observable of the picked message.
+   * @example
+   *  websocketWorker.pickMessage((data) => data.type === 'message');
+   *  // => An Observable of the picked message.
+   *  // => The Observable is used to pick a message from the websocket connection.
    */
   pickMessage<R>(
     filterCallback: (data: M) => boolean,
@@ -204,6 +236,10 @@ export class WebsocketWorker<M> {
    * @param {(data: M) => boolean} filterCallback - The callback to use when picking a message.
    * @param {(data: M) => R} mapCallback - The callback to use when mapping the picked message.
    * @return {Observable<R>} An Observable of the mapped message.
+   * @example
+   *  websocketWorker.pickAndMapMessage((data) => data.type === 'message', (data) => data.data);
+   *  // => An Observable of the mapped message.
+   *  // => The Observable is used to pick and map a message from the websocket connection.
    */
   pickAndMapMessage<R>(
     filterCallback: (data: M) => boolean,
@@ -214,6 +250,12 @@ export class WebsocketWorker<M> {
 
   /**
    * Connect to the websocket.
+   *
+   * @return {void}
+   * @example
+   *  websocketWorker.connect();
+   *  // => Connects to the websocket.
+   *  // => The websocket connection is established.
    */
   connect(): void {
     const {
@@ -242,6 +284,12 @@ export class WebsocketWorker<M> {
 
   /**
    * Disconnect from the websocket.
+   *
+   * @return {void}
+   * @example
+   *  websocketWorker.disconnect();
+   *  // => Disconnects from the websocket.
+   *  // => The websocket connection is closed.
    */
   disconnect(): void {
     if (InstanceOfType(this.WebsocketSubscription, Subscription)) {
@@ -265,6 +313,12 @@ export class WebsocketWorker<M> {
 
   /**
    * Reconnect to the websocket.
+   *
+   * @return {void}
+   * @example
+   *  websocketWorker.reconnect();
+   *  // => Reconnects to the websocket.
+   *  // => The websocket connection is re-established.
    */
   reconnect(): void {
     this.disconnect();

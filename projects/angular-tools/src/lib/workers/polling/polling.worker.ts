@@ -7,6 +7,10 @@ import { StartPolling } from './polling.helper';
 /**
  * Class representing a polling worker.
  * The `PollingWorker` class is used to perform HTTP GET requests at regular intervals.
+ *
+ * @example
+ *  new PollingWorker(http);
+ *  // => Creates a new polling worker with the provided Angular HttpClient service.
  */
 @Injectable({
   providedIn: 'root'

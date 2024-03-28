@@ -41,6 +41,7 @@ export type PollingFilter<T> = (data: T) => boolean;
 
 /**
  * The `PollingConfigs` interface is used to configure the polling operation.
+ *
  * The `PollingConfigs` interface has the following properties:
  * - `httpOptions`: The optional HTTP headers for the GET request.
  * - `comparerCallback`: A function to compare the current and previous responses. If this function returns `true`, the Observable will not emit the current response.
@@ -55,6 +56,7 @@ export interface PollingConfigs<T> {
 
 /**
  * The `PollingManager` interface is used to manage the polling operation.
+ *
  * The `PollingManager` interface has the following properties:
  * - `pollingObservable$`: An Observable that emits the response of each HTTP GET request.
  * - `pollingSubscription`: The subscription to the polling Observable.

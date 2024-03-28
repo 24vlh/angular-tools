@@ -8,6 +8,8 @@ import { WebSocketSubjectConfig } from 'rxjs/internal/observable/dom/WebSocketSu
 /**
  * The `WEBSOCKET_EXPONENTIAL_BACKOFF_OPTIONS` injection token is used to provide the configuration options for
  * an exponential backoff strategy in a WebSocket connection.
+ *
+ * @type {InjectionToken<WebsocketExponentialBackoffOptions>}
  */
 export const WEBSOCKET_EXPONENTIAL_BACKOFF_OPTIONS: InjectionToken<WebsocketExponentialBackoffOptions> =
   new InjectionToken<WebsocketExponentialBackoffOptions>(
