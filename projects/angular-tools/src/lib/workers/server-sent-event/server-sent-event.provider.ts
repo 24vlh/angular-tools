@@ -12,6 +12,17 @@ import { TimeoutBackoffConfigs } from '../../helpers/timeout-backoff.interface';
  * @param {boolean | undefined} withCredentials - Whether to include credentials in the request. Optional.
  *
  * @returns {FactoryProvider} - The created provider.
+ * @example
+ *  providers: [SERVER_EVENT_SENT_PROVIDER_FACTORY('http://localhost:3000')]
+ *  // => Provides the server-sent event worker.
+ *  // => The server-sent event worker is used to manage server-sent event requests.
+ *  const workerInjectionToken = new InjectionToken<ServerSentEventWorker<M>>('injectionToken');
+ *  providers: [SERVER_EVENT_SENT_PROVIDER_FACTORY('http://localhost:3000', undefined, workerInjectionToken)]
+ *  // => Provides the server-sent event worker.
+ *  // => The server-sent event worker is used to manage server-sent event requests.
+ *  providers: [SERVER_EVENT_SENT_PROVIDER_FACTORY('http://localhost:3000', undefined, workerInjectionToken, true)]
+ *  // => Provides the server-sent event worker.
+ *  // => The server-sent event worker is used to manage server-sent event requests.
  */
 export const SERVER_EVENT_SENT_PROVIDER_FACTORY = <M>(
   url: string,

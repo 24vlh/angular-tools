@@ -173,6 +173,7 @@ It also provides methods to manage mapped subscriptions.</p>
                                 <a href="#UnmappedSubscription" >UnmappedSubscription</a>
                             </li>
                             <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#Unsubscribe" >Unsubscribe</a>
                             </li>
                         </ul>
@@ -507,6 +508,7 @@ A subscription is considered not mapped if it is of type SubscriptionLike and is
                 <td class="col-md-4">
                     <a name="Unsubscribe"></a>
                     <span class="name">
+                            <span class="modifier">Private</span>
                         <span ><b>Unsubscribe</b></span>
                         <a href="#Unsubscribe"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1274,7 +1276,7 @@ export class SubscriptionWorker {
    *  subscriptionWorkerUnsubscribe(sub);
    *  // &#x3D;&gt; Unsubscribes from the subscription.
    */
-  Unsubscribe &#x3D; (sub: SubscriptionLike): void &#x3D;&gt; {
+  private Unsubscribe &#x3D; (sub: SubscriptionLike): void &#x3D;&gt; {
     try {
       sub.unsubscribe();
     } catch (error: unknown) {

@@ -214,9 +214,7 @@
                 <tr>
                     <td class="col-md-4">
                             <div class="io-description"><p>Create a custom event worker.</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> new CustomEventWorker(&#39;type&#39;);
- // =&gt; Creates a custom event worker with the provided type.
- // =&gt; If the type is not provided, it catches the error and logs it.</code></pre></div></div>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -284,13 +282,6 @@
                                                 </tr>
                                         </tbody>
                                     </table>
-                                    <b>Example :</b>
-                                        <div>
-                                            <p> new CustomEventWorker(&#39;type&#39;);
- // =&gt; Creates a custom event worker with the provided type.
- // =&gt; If the type is not provided, it catches the error and logs it.</p>
-
-                                        </div>
                             </div>
                     </td>
                 </tr>
@@ -334,7 +325,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -405,8 +396,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -414,8 +405,8 @@
             <tr>
                 <td class="col-md-4">
                         <div class="io-description"><p>Dispatch a custom event.</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> dispatch(data);
- dispatch(data, eventInitDict);
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> customEventWorker.dispatch(data);
+ customEventWorker.dispatch(data, eventInitDict);
  // =&gt; Dispatches a custom event with the provided data and event initialization dictionary.
  // =&gt; The event is dispatched to the window object.
  // =&gt; The event is also dispatched to the custom event stream.
@@ -515,8 +506,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -524,8 +515,8 @@
             <tr>
                 <td class="col-md-4">
                         <div class="io-description"><p>Dispatch a custom event.</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> DispatchCustomEvent(window, &#39;type&#39;, data);
- DispatchCustomEvent(window, &#39;type&#39;, data, eventInitDict);
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> customEventWorker.DispatchCustomEvent(window, &#39;type&#39;, data);
+ customEventWorker.DispatchCustomEvent(window, &#39;type&#39;, data, eventInitDict);
  // =&gt; Dispatches a custom event with the provided data and event initialization dictionary.
  // =&gt; If the event initialization dictionary is not provided, it defaults to the CustomEventInit dictionary.
  // =&gt; If the event initialization dictionary is not of type CustomEventInit, it catches the error and logs it.
@@ -619,8 +610,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="116"
-                                    class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:116</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/event/custom-event.worker.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -628,13 +619,13 @@
             <tr>
                 <td class="col-md-4">
                         <div class="io-description"><p>Listen for a custom event.</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> listen$();
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> customEventWorker.listen$();
  // =&gt; An observable of the custom events.
- listen$((data: T) =&gt; data.key === &#39;value&#39;);
+ customEventWorker.listen$((data: T) =&gt; data.key === &#39;value&#39;);
  // =&gt; An observable of the custom events that pass the filter callback.
- listen$(
- (data: T) =&gt; data.key === &#39;value&#39;,
- (prev: T, curr: T) =&gt; prev.key === curr.key
+ customEventWorker.listen$(
+  (data: T) =&gt; data.key === &#39;value&#39;,
+  (prev: T, curr: T) =&gt; prev.key === curr.key
  );
  // =&gt; An observable of the custom events that pass the filter callback and do not match the comparer callback.</code></pre></div></div>
 
@@ -740,10 +731,6 @@ export class CustomEventWorker&lt;T&gt; {
    * @param {string} type - The type of the custom event.
    * @param {ReplaySubject&lt;T&gt;} customEventStream - The custom event stream.
    * @param {Window &amp; typeof globalThis} windowObject - The window object.
-   * @example
-   *  new CustomEventWorker(&#x27;type&#x27;);
-   *  // &#x3D;&gt; Creates a custom event worker with the provided type.
-   *  // &#x3D;&gt; If the type is not provided, it catches the error and logs it.
    */
   constructor(
     @Inject(CUSTOM_EVENT_TYPE)
@@ -764,8 +751,8 @@ export class CustomEventWorker&lt;T&gt; {
    * @param {CustomEventInit} eventInitDict - The custom event initialization dictionary.
    * @returns {void}
    * @example
-   *  DispatchCustomEvent(window, &#x27;type&#x27;, data);
-   *  DispatchCustomEvent(window, &#x27;type&#x27;, data, eventInitDict);
+   *  customEventWorker.DispatchCustomEvent(window, &#x27;type&#x27;, data);
+   *  customEventWorker.DispatchCustomEvent(window, &#x27;type&#x27;, data, eventInitDict);
    *  // &#x3D;&gt; Dispatches a custom event with the provided data and event initialization dictionary.
    *  // &#x3D;&gt; If the event initialization dictionary is not provided, it defaults to the CustomEventInit dictionary.
    *  // &#x3D;&gt; If the event initialization dictionary is not of type CustomEventInit, it catches the error and logs it.
@@ -787,8 +774,8 @@ export class CustomEventWorker&lt;T&gt; {
    * @param {CustomEventInit} eventInitDict - The custom event initialization dictionary.
    * @returns {void}
    * @example
-   *  dispatch(data);
-   *  dispatch(data, eventInitDict);
+   *  customEventWorker.dispatch(data);
+   *  customEventWorker.dispatch(data, eventInitDict);
    *  // &#x3D;&gt; Dispatches a custom event with the provided data and event initialization dictionary.
    *  // &#x3D;&gt; The event is dispatched to the window object.
    *  // &#x3D;&gt; The event is also dispatched to the custom event stream.
@@ -817,13 +804,13 @@ export class CustomEventWorker&lt;T&gt; {
    * @param {(prev: T, curr: T) &#x3D;&gt; boolean} comparerCallback - A callback function to compare the previous and current custom events.
    * @returns {Observable&lt;T&gt;} An observable of the custom events.
    * @example
-   *  listen$();
+   *  customEventWorker.listen$();
    *  // &#x3D;&gt; An observable of the custom events.
-   *  listen$((data: T) &#x3D;&gt; data.key &#x3D;&#x3D;&#x3D; &#x27;value&#x27;);
+   *  customEventWorker.listen$((data: T) &#x3D;&gt; data.key &#x3D;&#x3D;&#x3D; &#x27;value&#x27;);
    *  // &#x3D;&gt; An observable of the custom events that pass the filter callback.
-   *  listen$(
-   *  (data: T) &#x3D;&gt; data.key &#x3D;&#x3D;&#x3D; &#x27;value&#x27;,
-   *  (prev: T, curr: T) &#x3D;&gt; prev.key &#x3D;&#x3D;&#x3D; curr.key
+   *  customEventWorker.listen$(
+   *   (data: T) &#x3D;&gt; data.key &#x3D;&#x3D;&#x3D; &#x27;value&#x27;,
+   *   (prev: T, curr: T) &#x3D;&gt; prev.key &#x3D;&#x3D;&#x3D; curr.key
    *  );
    *  // &#x3D;&gt; An observable of the custom events that pass the filter callback and do not match the comparer callback.
    */

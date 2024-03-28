@@ -90,24 +90,131 @@
                    <div class="content-data">
 
 <h1>Angular Tools</h1>
-<p>This project was generated with <a href="https://github.com/angular/angular-cli">Angular CLI</a> version 17.1.3.</p>
-<h2>Development server</h2>
-<p>Run <code>ng serve</code> for a dev server. Navigate to <code>http://localhost:4200/</code>. The application will automatically reload if you
-change any of the source files.</p>
-<h2>Code scaffolding</h2>
-<p>Run <code>ng generate component component-name</code> to generate a new component. You can also
-use <code>ng generate directive|pipe|service|class|guard|interface|enum|module</code>.</p>
-<h2>Build</h2>
-<p>Run <code>ng build</code> to build the project. The build artifacts will be stored in the <code>dist/</code> directory.</p>
-<h2>Running unit tests</h2>
-<p>Run <code>ng test</code> to execute the unit tests via <a href="https://karma-runner.github.io">Karma</a>.</p>
-<h2>Running end-to-end tests</h2>
-<p>Run <code>ng e2e</code> to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a
-package that implements end-to-end testing capabilities.</p>
-<h2>Further help</h2>
-<p>To get more help on the Angular CLI use <code>ng help</code> or go check out
-the <a href="https://angular.io/cli">Angular CLI Overview and Command Reference</a> page.</p>
-
+<h2>IntersectionObserverDirective</h2>
+<p><code>IntersectionObserverDirective</code> is a directive that implements the Intersection Observer API. It emits an event each
+time the host element intersects with the viewport.</p>
+<h3>Usage</h3>
+<p>To use the <code>IntersectionObserverDirective</code>, add the <code>vlhIntersectionObserver</code> attribute to an element in your template.
+Bind a method to the <code>(intersection)</code> output event to handle the intersection event.</p>
+<p>Here&#39;s an example:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-angular17html">
+&lt;div vlhIntersectionObserver (intersection)=&quot;onIntersection($event)&quot;&gt;&lt;/div&gt;</code></pre></div><h2>ExponentiallyBackoff Function</h2>
+<p><code>ExponentiallyBackoff</code> is a function that implements exponential backoff in observables.</p>
+<h3>Usage</h3>
+<p>This function takes four parameters:</p>
+<ul>
+<li><code>maxRetryAttempts</code>: The maximum number of retry attempts. Default is 3.</li>
+<li><code>initialDelay</code>: The initial delay in milliseconds before the first retry. Default is 1000.</li>
+<li><code>maxDelay</code>: The maximum delay in milliseconds between retries. Default is 2 minutes.</li>
+<li><code>disableAndUseConstantDelayOf</code>: If provided, disables exponential backoff and uses this constant delay instead.</li>
+</ul>
+<p>It returns a function that takes an Observable and returns an Observable with retry logic applied.</p>
+<p>Here&#39;s an example:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ExponentiallyBackoff(10, 1000, 2 * 60 * 1000, 5000);</code></pre></div><h2>TimeoutBackoff Function</h2>
+<p><code>TimeoutBackoff</code> is a function that implements timeout backoff in observables.</p>
+<h3>Usage</h3>
+<p>This function takes three parameters:</p>
+<ul>
+<li><code>maxRetryAttempts</code>: The maximum number of retry attempts. Default is 3.</li>
+<li><code>initialDelay</code>: The initial delay in milliseconds before the first retry. Default is 1000.</li>
+<li><code>maxDelay</code>: The maximum delay in milliseconds between retries. Default is 2 minutes.</li>
+</ul>
+<p>It returns a function that takes an Observable and returns an Observable with retry logic applied.</p>
+<p>Here&#39;s an example:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">TimeoutBackoff(10, 1000, 2 * 60 * 1000);</code></pre></div><h2>Service worker classes</h2>
+<ul>
+<li><code>CustomEventWorker</code> A class that helps create and listen to custom events.</li>
+<li><code>PollingWorker</code> A class that helps create and manage polling tasks.</li>
+<li><code>ServerSentEventWorker</code> A class that helps listen to server-sent events.</li>
+<li><code>StoreWorker</code> A class that helps manage data flow using the Redux pattern.</li>
+<li><code>SubscriptionWorker</code> A class that helps manage subscriptions to observables.</li>
+<li><code>WebsocketWorker</code> A class that helps send/read messages to/from a websocket connections.</li>
+</ul>
+<h3>Usage</h3>
+<p>When bootstrapping each class, it is best to use the provided <code>PROVIDER_FACTORY</code> helpers.</p>
+<h4>CustomEventWorker</h4>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;CustomEventWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  CUSTOM_EVENT_PROVIDER_FACTORY(workerInjectionToken)
+]</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;CustomEventWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  CUSTOM_EVENT_PROVIDER_FACTORY(workerInjectionToken, {
+    replySubjectBufferSize: 1,
+    windowObjectInjectionToken: CUSTOM_EVENT_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]</code></pre></div><h5>Example</h5>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.DispatchCustomEvent(window, &#39;type&#39;, data);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.DispatchCustomEvent(window, &#39;type&#39;, data);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.dispatch(data);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.dispatch(data, eventInitDict);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.listen$();</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.listen$((data: T) =&gt; data.key === &#39;value&#39;);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.listen$(
+  (data: T) =&gt; data.key === &#39;value&#39;,
+  (prev: T, curr: T) =&gt; prev.key === curr.key
+);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">customEventWorker.listen$().pipe(
+  filter((data: T) =&gt; data.key === &#39;value&#39;)
+);</code></pre></div><h4>PollingWorker</h4>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;PollingWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  POLLING_PROVIDER_FACTORY(workerInjectionToken)
+]</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;PollingWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  POLLING_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: POLLING_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]</code></pre></div><h5>Example</h5>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">pollingWorker.startPolling(url);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">pollingWorker.startPolling(url, 1000);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">pollingWorker.startPolling(url, 1000, (data: T) =&gt; data.key === &#39;value&#39;);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">pollingWorker.startPolling(
+  url,
+  1000,
+  (data: T) =&gt; data.key === &#39;value&#39;,
+  (prev: T, curr: T) =&gt; prev.key === curr.key
+);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">pollingWorker.startPolling(url, 1000).pipe(
+  filter((data: T) =&gt; data.key === &#39;value&#39;)
+);</code></pre></div><h4>ServerSentEventWorker</h4>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;ServerSentEventWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  SERVER_SENT_EVENT_PROVIDER_FACTORY(workerInjectionToken)
+]</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;ServerSentEventWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  SERVER_SENT_EVENT_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: SERVER_SENT_EVENT_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]</code></pre></div><h5>Example</h5>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">serverSentEventWorker.connect();</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">serverSentEventWorker.listen$();</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">serverSentEventWorker.listen$((data: T) =&gt; data.key === &#39;value&#39;);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">serverSentEventWorker.listen$(
+  (data: T) =&gt; data.key === &#39;value&#39;,
+  (prev: T, curr: T) =&gt; prev.key === curr.key
+);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">serverSentEventWorker.listen$().pipe(
+  filter((data: T) =&gt; data.key === &#39;value&#39;)
+);</code></pre></div><h4>StoreWorker</h4>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;StoreWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  STORE_PROVIDER_FACTORY(workerInjectionToken)
+]</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;StoreWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  STORE_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: STORE_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]</code></pre></div><h4>SubscriptionWorker</h4>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;SubscriptionWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  SUBSCRIPTION_PROVIDER_FACTORY(workerInjectionToken)
+]</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;SubscriptionWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  SUBSCRIPTION_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: SUBSCRIPTION_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]</code></pre></div><h5>Example</h5>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">subscriptionWorker.add(subscriptionLike);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">subscriptionWorker.unsubscribe();</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">subscriptionWorker.map(&#39;key&#39;, subscriptionLike);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">subscriptionWorker.unsubscribeMapped(&#39;key&#39;);</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">subscriptionWorker.unsubscribeAllMapped();</code></pre></div><h4>WebsocketWorker</h4>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;WebsocketWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  WEBSOCKET_PROVIDER_FACTORY(workerInjectionToken)
+]</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const workerInjectionToken = new InjectionToken&lt;WebsocketWorker&lt;T&gt;&gt;(&#39;worker&#39;);
+providers: [
+  WEBSOCKET_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: WEBSOCKET_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]</code></pre></div>
 
 
 

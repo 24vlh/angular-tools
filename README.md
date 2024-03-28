@@ -1,31 +1,304 @@
 # Angular Tools
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.3.
+## IntersectionObserverDirective
 
-## Development server
+`IntersectionObserverDirective` is a directive that implements the Intersection Observer API. It emits an event each
+time the host element intersects with the viewport.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you
-change any of the source files.
+### Usage
 
-## Code scaffolding
+To use the `IntersectionObserverDirective`, add the `vlhIntersectionObserver` attribute to an element in your template.
+Bind a method to the `(intersection)` output event to handle the intersection event.
 
-Run `ng generate component component-name` to generate a new component. You can also
-use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Here's an example:
 
-## Build
+```angular17html
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+<div vlhIntersectionObserver (intersection)="onIntersection($event)"></div>
+```
 
-## Running unit tests
+## ExponentiallyBackoff Function
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`ExponentiallyBackoff` is a function that implements exponential backoff in observables.
 
-## Running end-to-end tests
+### Usage
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a
-package that implements end-to-end testing capabilities.
+This function takes four parameters:
 
-## Further help
+- `maxRetryAttempts`: The maximum number of retry attempts. Default is 3.
+- `initialDelay`: The initial delay in milliseconds before the first retry. Default is 1000.
+- `maxDelay`: The maximum delay in milliseconds between retries. Default is 2 minutes.
+- `disableAndUseConstantDelayOf`: If provided, disables exponential backoff and uses this constant delay instead.
 
-To get more help on the Angular CLI use `ng help` or go check out
-the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+It returns a function that takes an Observable and returns an Observable with retry logic applied.
+
+Here's an example:
+
+```typescript
+ExponentiallyBackoff(10, 1000, 2 * 60 * 1000, 5000);
+```
+
+## TimeoutBackoff Function
+
+`TimeoutBackoff` is a function that implements timeout backoff in observables.
+
+### Usage
+
+This function takes three parameters:
+
+- `maxRetryAttempts`: The maximum number of retry attempts. Default is 3.
+- `initialDelay`: The initial delay in milliseconds before the first retry. Default is 1000.
+- `maxDelay`: The maximum delay in milliseconds between retries. Default is 2 minutes.
+
+It returns a function that takes an Observable and returns an Observable with retry logic applied.
+
+Here's an example:
+
+```typescript
+TimeoutBackoff(10, 1000, 2 * 60 * 1000);
+```
+
+## Service worker classes
+
+- `CustomEventWorker` A class that helps create and listen to custom events.
+- `PollingWorker` A class that helps create and manage polling tasks.
+- `ServerSentEventWorker` A class that helps listen to server-sent events.
+- `StoreWorker` A class that helps manage data flow using the Redux pattern.
+- `SubscriptionWorker` A class that helps manage subscriptions to observables.
+- `WebsocketWorker` A class that helps send/read messages to/from a websocket connections.
+
+### Usage
+
+When bootstrapping each class, it is best to use the provided `PROVIDER_FACTORY` helpers.
+
+#### CustomEventWorker
+
+````typescript
+const workerInjectionToken = new InjectionToken<CustomEventWorker<T>>('worker');
+providers: [
+  CUSTOM_EVENT_PROVIDER_FACTORY(workerInjectionToken)
+]
+````
+
+````typescript
+const workerInjectionToken = new InjectionToken<CustomEventWorker<T>>('worker');
+providers: [
+  CUSTOM_EVENT_PROVIDER_FACTORY(workerInjectionToken, {
+    replySubjectBufferSize: 1,
+    windowObjectInjectionToken: CUSTOM_EVENT_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]
+````
+
+##### Example
+
+````typescript
+customEventWorker.DispatchCustomEvent(window, 'type', data);
+````
+
+````typescript
+customEventWorker.DispatchCustomEvent(window, 'type', data);
+````
+
+````typescript
+customEventWorker.dispatch(data);
+````
+
+````typescript
+customEventWorker.dispatch(data, eventInitDict);
+````
+
+````typescript
+customEventWorker.listen$();
+````
+
+````typescript
+customEventWorker.listen$((data: T) => data.key === 'value');
+````
+
+````typescript
+customEventWorker.listen$(
+  (data: T) => data.key === 'value',
+  (prev: T, curr: T) => prev.key === curr.key
+);
+````
+
+````typescript
+customEventWorker.listen$().pipe(
+  filter((data: T) => data.key === 'value')
+);
+````
+
+#### PollingWorker
+
+````typescript
+const workerInjectionToken = new InjectionToken<PollingWorker<T>>('worker');
+providers: [
+  POLLING_PROVIDER_FACTORY(workerInjectionToken)
+]
+````
+
+````typescript
+const workerInjectionToken = new InjectionToken<PollingWorker<T>>('worker');
+providers: [
+  POLLING_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: POLLING_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]
+````
+
+##### Example
+
+````typescript
+pollingWorker.startPolling(url);
+````
+
+````typescript
+pollingWorker.startPolling(url, 1000);
+````
+
+````typescript
+pollingWorker.startPolling(url, 1000, (data: T) => data.key === 'value');
+````
+
+````typescript
+pollingWorker.startPolling(
+  url,
+  1000,
+  (data: T) => data.key === 'value',
+  (prev: T, curr: T) => prev.key === curr.key
+);
+````
+
+````typescript
+pollingWorker.startPolling(url, 1000).pipe(
+  filter((data: T) => data.key === 'value')
+);
+````
+
+#### ServerSentEventWorker
+
+````typescript
+const workerInjectionToken = new InjectionToken<ServerSentEventWorker<T>>('worker');
+providers: [
+  SERVER_SENT_EVENT_PROVIDER_FACTORY(workerInjectionToken)
+]
+````
+
+````typescript
+const workerInjectionToken = new InjectionToken<ServerSentEventWorker<T>>('worker');
+providers: [
+  SERVER_SENT_EVENT_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: SERVER_SENT_EVENT_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]
+````
+
+##### Example
+
+````typescript
+serverSentEventWorker.connect();
+````
+
+````typescript
+serverSentEventWorker.listen$();
+````
+
+````typescript
+serverSentEventWorker.listen$((data: T) => data.key === 'value');
+````
+
+````typescript
+serverSentEventWorker.listen$(
+  (data: T) => data.key === 'value',
+  (prev: T, curr: T) => prev.key === curr.key
+);
+````
+
+````typescript
+serverSentEventWorker.listen$().pipe(
+  filter((data: T) => data.key === 'value')
+);
+````
+
+#### StoreWorker
+
+````typescript
+const workerInjectionToken = new InjectionToken<StoreWorker<T>>('worker');
+providers: [
+  STORE_PROVIDER_FACTORY(workerInjectionToken)
+]
+````
+
+````typescript
+const workerInjectionToken = new InjectionToken<StoreWorker<T>>('worker');
+providers: [
+  STORE_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: STORE_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]
+````
+
+#### SubscriptionWorker
+
+````typescript
+const workerInjectionToken = new InjectionToken<SubscriptionWorker<T>>('worker');
+providers: [
+  SUBSCRIPTION_PROVIDER_FACTORY(workerInjectionToken)
+]
+````
+
+````typescript
+const workerInjectionToken = new InjectionToken<SubscriptionWorker<T>>('worker');
+providers: [
+  SUBSCRIPTION_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: SUBSCRIPTION_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]
+````
+
+##### Example
+
+````typescript
+subscriptionWorker.add(subscriptionLike);
+````
+
+````typescript
+subscriptionWorker.unsubscribe();
+````
+
+````typescript
+subscriptionWorker.map('key', subscriptionLike);
+````
+
+````typescript
+subscriptionWorker.unsubscribeMapped('key');
+````
+
+````typescript
+subscriptionWorker.unsubscribeAllMapped();
+````
+
+#### WebsocketWorker
+
+````typescript
+const workerInjectionToken = new InjectionToken<WebsocketWorker<T>>('worker');
+providers: [
+  WEBSOCKET_PROVIDER_FACTORY(workerInjectionToken)
+]
+````
+
+````typescript
+const workerInjectionToken = new InjectionToken<WebsocketWorker<T>>('worker');
+providers: [
+  WEBSOCKET_PROVIDER_FACTORY(workerInjectionToken, {
+    windowObjectInjectionToken: WEBSOCKET_WINDOW_OBJECT,
+    windowObject: window
+  }),
+]
+````

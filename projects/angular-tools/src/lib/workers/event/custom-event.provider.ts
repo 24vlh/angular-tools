@@ -17,15 +17,21 @@ import { OfObjectType } from '@24vlh/ts-assert';
  * @param configs
  * @returns {Provider[]} An array of providers.
  * @example
- *  providers: CUSTOM_EVENT_PROVIDER_FACTORY(LOCALIZED_CUSTOM_EVENT_WORKER_INJECTION_TOKEN, LOCALIZED_CUSTOM_EVENT_STREAM_REPLAY_SUBJECT_INJECTION_TOKEN, bufferSize)
- *  // => Provides a custom event worker instance and a custom event stream.
- *  // => The custom event worker instance dispatches custom events to the custom event stream.
- *  // => LOCALIZED_CUSTOM_EVENT_WORKER_INJECTION_TOKEN is the injection token for the custom event worker.
- *  // => LOCALIZED_CUSTOM_EVENT_STREAM_REPLAY_SUBJECT_INJECTION_TOKEN is the injection token for the custom event stream.
- *  // => replySubjectBufferSize is the buffer size of the custom event stream.
- *  // => CUSTOM_EVENT_WINDOW_OBJECT is the injection token for the window object.
- *  // => The window object is the window object.
- *  // => LOCALIZED_CUSTOM_EVENT_STREAM_REPLAY_SUBJECT_INJECTION_TOKEN should be of type CUSTOM_EVENT_STREAM_REPLAY_SUBJECT
+ *  const workerInjectionToken = new InjectionToken<CustomEventWorker<T>>('worker');
+ *  providers: [
+ *   CUSTOM_EVENT_PROVIDER_FACTORY(workerInjectionToken)
+ *  ]
+ *  // => Provides the custom event worker.
+ *  // => The custom event worker is used to manage custom event requests.
+ *  providers: [
+ *   CUSTOM_EVENT_PROVIDER_FACTORY(workerInjectionToken, {
+ *    replySubjectBufferSize: 1,
+ *    windowObjectInjectionToken: CUSTOM_EVENT_WINDOW_OBJECT,
+ *    windowObject: window
+ *   })
+ *  ]
+ *  // => Provides the custom event worker.
+ *  // => The custom event worker is used to manage custom event requests.
  */
 export const CUSTOM_EVENT_PROVIDER_FACTORY = <T>(
   workerInjectionToken: InjectionToken<CustomEventWorker<T>>,

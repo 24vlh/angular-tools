@@ -36,10 +36,6 @@ export class CustomEventWorker<T> {
    * @param {string} type - The type of the custom event.
    * @param {ReplaySubject<T>} customEventStream - The custom event stream.
    * @param {Window & typeof globalThis} windowObject - The window object.
-   * @example
-   *  new CustomEventWorker('type');
-   *  // => Creates a custom event worker with the provided type.
-   *  // => If the type is not provided, it catches the error and logs it.
    */
   constructor(
     @Inject(CUSTOM_EVENT_TYPE)
@@ -60,8 +56,8 @@ export class CustomEventWorker<T> {
    * @param {CustomEventInit} eventInitDict - The custom event initialization dictionary.
    * @returns {void}
    * @example
-   *  DispatchCustomEvent(window, 'type', data);
-   *  DispatchCustomEvent(window, 'type', data, eventInitDict);
+   *  customEventWorker.DispatchCustomEvent(window, 'type', data);
+   *  customEventWorker.DispatchCustomEvent(window, 'type', data, eventInitDict);
    *  // => Dispatches a custom event with the provided data and event initialization dictionary.
    *  // => If the event initialization dictionary is not provided, it defaults to the CustomEventInit dictionary.
    *  // => If the event initialization dictionary is not of type CustomEventInit, it catches the error and logs it.
@@ -83,8 +79,8 @@ export class CustomEventWorker<T> {
    * @param {CustomEventInit} eventInitDict - The custom event initialization dictionary.
    * @returns {void}
    * @example
-   *  dispatch(data);
-   *  dispatch(data, eventInitDict);
+   *  customEventWorker.dispatch(data);
+   *  customEventWorker.dispatch(data, eventInitDict);
    *  // => Dispatches a custom event with the provided data and event initialization dictionary.
    *  // => The event is dispatched to the window object.
    *  // => The event is also dispatched to the custom event stream.
@@ -113,13 +109,13 @@ export class CustomEventWorker<T> {
    * @param {(prev: T, curr: T) => boolean} comparerCallback - A callback function to compare the previous and current custom events.
    * @returns {Observable<T>} An observable of the custom events.
    * @example
-   *  listen$();
+   *  customEventWorker.listen$();
    *  // => An observable of the custom events.
-   *  listen$((data: T) => data.key === 'value');
+   *  customEventWorker.listen$((data: T) => data.key === 'value');
    *  // => An observable of the custom events that pass the filter callback.
-   *  listen$(
-   *  (data: T) => data.key === 'value',
-   *  (prev: T, curr: T) => prev.key === curr.key
+   *  customEventWorker.listen$(
+   *   (data: T) => data.key === 'value',
+   *   (prev: T, curr: T) => prev.key === curr.key
    *  );
    *  // => An observable of the custom events that pass the filter callback and do not match the comparer callback.
    */

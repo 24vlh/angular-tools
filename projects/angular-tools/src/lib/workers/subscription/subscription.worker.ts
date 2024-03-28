@@ -194,7 +194,7 @@ export class SubscriptionWorker {
    *  subscriptionWorkerUnsubscribe(sub);
    *  // => Unsubscribes from the subscription.
    */
-  Unsubscribe = (sub: SubscriptionLike): void => {
+  private Unsubscribe = (sub: SubscriptionLike): void => {
     try {
       sub.unsubscribe();
     } catch (error: unknown) {
