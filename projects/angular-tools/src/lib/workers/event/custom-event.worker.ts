@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Inject, Optional } from '@angular/core';
 import {
   CUSTOM_EVENT_STREAM_REPLAY_SUBJECT,
   CUSTOM_EVENT_TYPE,
@@ -23,15 +23,7 @@ import { OfFunctionType } from '@24vlh/ts-assert';
  * Class representing a custom event worker.
  *
  * @template T - The type of the data associated with the custom event.
- * @example
- *  new CustomEventWorker('type');
- *  // => Creates a custom event worker with the provided type.
- *  // => If the type is not provided, it catches the error and logs it.
- *  // => The custom event worker dispatches custom events to the custom event stream.
  */
-@Injectable({
-  providedIn: 'root'
-})
 export class CustomEventWorker<T> {
   public customEventStream$: Observable<T> =
     this.customEventStream.asObservable();

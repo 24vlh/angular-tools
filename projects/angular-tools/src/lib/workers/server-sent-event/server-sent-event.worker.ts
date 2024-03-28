@@ -23,21 +23,6 @@ import { TimeoutBackoffConfigs } from '../../helpers/timeout-backoff.interface';
  * It also provides methods to listen to specific messages from the server.
  *
  * @template M - The type of the messages.
- * @example
- *  new ServerSentEventWorker('url', true, { maxRetries: 3, initialDelay: 1000, maxDelay: 5000 }, ngZone);
- *  // => Creates a server-sent event worker with the provided URL, with credentials, timeout backoff configurations, and Angular's execution context.
- *  // => If the URL is not provided, it catches the error and logs it.
- *  // => The server-sent event worker connects to the server-sent event server.
- *  // => The server-sent event worker disconnects from the server-sent event server.
- *  // => The server-sent event worker reconnects to the server-sent event server.
- *  // => The server-sent event worker listens to specific messages from the server.
- *  // => The server-sent event worker picks specific messages from the server.
- *  // => The server-sent event worker picks and maps specific messages from the server.
- *  // => The server-sent event worker checks if the connection to the server-sent event server is disconnected.
- *  // => The server-sent event worker returns the EventSource object.
- *  // => The server-sent event worker returns the Subject for the server-sent events.
- *  // => The server-sent event worker returns the Observable for the server-sent events.
- *  // => The server-sent event worker listens to specific messages from the server.
  */
 export class ServerSentEventWorker<M> {
   private readonly eventSourceInitDic: EventSourceInit | undefined = undefined;

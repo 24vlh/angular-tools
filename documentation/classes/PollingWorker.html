@@ -1,0 +1,575 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>@24vlh/angular-tools documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">@24vlh/angular-tools documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >PollingWorker</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>projects/angular-tools/src/lib/workers/polling/polling.worker.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class representing a polling worker.
+The <code>PollingWorker</code> class is used to perform HTTP GET requests at regular intervals.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#http" >http</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#poll$" >poll$</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HttpClient)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">projects/angular-tools/src/lib/workers/polling/polling.worker.ts:10</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Create a polling worker.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> new PollingWorker(http);
+ // =&gt; Creates a new polling worker with the provided Angular HttpClient service.</code></pre></div></div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The Angular HttpClient service.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                                    <b>Example :</b>
+                                        <div>
+                                            <p> new PollingWorker(http);
+ // =&gt; Creates a new polling worker with the provided Angular HttpClient service.</p>
+
+                                        </div>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="http"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>http</b></span>
+                        <a href="#http"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>HttpClient</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">projects/angular-tools/src/lib/workers/polling/polling.worker.ts:19</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description">- The Angular HttpClient service.</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="poll$"></a>
+                    <span class="name">
+                        <span ><b>poll$</b></span>
+                        <a href="#poll$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>poll$(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, interval: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, configs?: <a href="../interfaces/PollingConfigs.html" target="_self">PollingConfigs&lt;T&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/polling/polling.worker.ts:52</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>The <code>poll$</code> method is used to perform HTTP GET requests at regular intervals.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> poll$(&#39;https://api.example.com/data&#39;, 1000, {
+ httpOptions: {
+ headers: new HttpHeaders({
+ &#39;Content-Type&#39;: &#39;application/json&#39;
+ })
+ },
+ comparerCallback: (prev, curr) =&gt; prev.id === curr.id,
+ callback: (response) =&gt; console.log(response)
+ });
+ // =&gt; Returns an Observable that emits the response of each HTTP GET request.
+ // =&gt; The HTTP GET request is sent to the provided URL at regular intervals.
+ // =&gt; The time interval is 1000 milliseconds.
+ // =&gt; The HTTP headers for the GET request are provided in the httpOptions property.
+ // =&gt; The comparerCallback function is used to compare the current and previous responses.</code></pre></div><p>The configuration object (<code>configs</code>) has the following properties:</p>
+<ul>
+<li><code>httpOptions</code>: The optional HTTP headers for the GET request.</li>
+<li><code>comparerCallback</code>: A function to compare the current and previous responses. If this function returns <code>true</code>, the Observable will not emit the current response.</li>
+<li><code>callback</code>: A function that is called with the response of each HTTP GET request.</li>
+</ul>
+<p>If the <code>comparerCallback</code> function is not provided, the method uses a default comparerCallback that checks if the JSON stringified versions of the current and previous responses are equal.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>url</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The URL to which the HTTP GET request will be sent.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>interval</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The time interval (in milliseconds) at which the HTTP GET request will be sent.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>configs</td>
+                                            <td>
+                                                            <code><a href="../interfaces/PollingConfigs.html" target="_self" >PollingConfigs&lt;T&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The configuration object for the polling operation.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;T&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>An Observable that emits the response of each HTTP GET request.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { PollingConfigs } from &#x27;./polling.type&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { StartPolling } from &#x27;./polling.helper&#x27;;
+
+/**
+ * Class representing a polling worker.
+ * The &#x60;PollingWorker&#x60; class is used to perform HTTP GET requests at regular intervals.
+ */
+export class PollingWorker {
+  /**
+   * Create a polling worker.
+   *
+   * @param {HttpClient} http - The Angular HttpClient service.
+   * @example
+   *  new PollingWorker(http);
+   *  // &#x3D;&gt; Creates a new polling worker with the provided Angular HttpClient service.
+   */
+  constructor(public http: HttpClient) {}
+
+  /**
+   * The &#x60;poll$&#x60; method is used to perform HTTP GET requests at regular intervals.
+   *
+   * @template T The type of the response object.
+   * @param {string} url The URL to which the HTTP GET request will be sent.
+   * @param {number} interval The time interval (in milliseconds) at which the HTTP GET request will be sent.
+   * @param {PollingConfigs&lt;T&gt;} configs The configuration object for the polling operation.
+   * @returns {Observable&lt;T&gt;} An Observable that emits the response of each HTTP GET request.
+   * @example
+   *  poll$(&#x27;https://api.example.com/data&#x27;, 1000, {
+   *  httpOptions: {
+   *  headers: new HttpHeaders({
+   *  &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
+   *  })
+   *  },
+   *  comparerCallback: (prev, curr) &#x3D;&gt; prev.id &#x3D;&#x3D;&#x3D; curr.id,
+   *  callback: (response) &#x3D;&gt; console.log(response)
+   *  });
+   *  // &#x3D;&gt; Returns an Observable that emits the response of each HTTP GET request.
+   *  // &#x3D;&gt; The HTTP GET request is sent to the provided URL at regular intervals.
+   *  // &#x3D;&gt; The time interval is 1000 milliseconds.
+   *  // &#x3D;&gt; The HTTP headers for the GET request are provided in the httpOptions property.
+   *  // &#x3D;&gt; The comparerCallback function is used to compare the current and previous responses.
+   *
+   * The configuration object (&#x60;configs&#x60;) has the following properties:
+   * - &#x60;httpOptions&#x60;: The optional HTTP headers for the GET request.
+   * - &#x60;comparerCallback&#x60;: A function to compare the current and previous responses. If this function returns &#x60;true&#x60;, the Observable will not emit the current response.
+   * - &#x60;callback&#x60;: A function that is called with the response of each HTTP GET request.
+   *
+   * If the &#x60;comparerCallback&#x60; function is not provided, the method uses a default comparerCallback that checks if the JSON stringified versions of the current and previous responses are equal.
+   */
+  poll$&lt;T&gt;(
+    url: string,
+    interval: number,
+    configs?: PollingConfigs&lt;T&gt;
+  ): Observable&lt;T&gt; {
+    return StartPolling&lt;T&gt;(
+      this.http.get&lt;T&gt;(url, configs?.httpOptions),
+      interval,
+      configs
+    );
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'PollingWorker.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -9,6 +9,7 @@ export * from './lib/workers/event/custom-event.interface';
 export * from './lib/workers/event/custom-event.provider';
 export * from './lib/workers/event/custom-event.worker';
 export * from './lib/workers/polling/polling.helper';
+export * from './lib/workers/polling/polling.provider';
 export * from './lib/workers/polling/polling.type';
 export * from './lib/workers/polling/polling.worker';
 export * from './lib/workers/server-sent-event/server-sent-event.injection-token';

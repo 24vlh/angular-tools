@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { from, Subscription } from 'rxjs';
 import { PollingWorker } from './polling.worker';
+import { POLLING_WORKER_PROVIDER_FACTORY } from './polling.provider';
 
 describe('PollingWorker', () => {
   let service: PollingWorker;
@@ -10,7 +11,7 @@ describe('PollingWorker', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        PollingWorker,
+        POLLING_WORKER_PROVIDER_FACTORY(PollingWorker),
         {
           provide: HttpClient,
           useValue: {

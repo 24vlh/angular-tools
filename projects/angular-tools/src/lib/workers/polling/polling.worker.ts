@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PollingConfigs } from './polling.type';
 import { Observable } from 'rxjs';
@@ -7,14 +6,7 @@ import { StartPolling } from './polling.helper';
 /**
  * Class representing a polling worker.
  * The `PollingWorker` class is used to perform HTTP GET requests at regular intervals.
- *
- * @example
- *  new PollingWorker(http);
- *  // => Creates a new polling worker with the provided Angular HttpClient service.
  */
-@Injectable({
-  providedIn: 'root'
-})
 export class PollingWorker {
   /**
    * Create a polling worker.

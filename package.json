@@ -1,6 +1,6 @@
 {
   "name": "@24vlh/angular-tools",
-  "version": "0.0.0",
+  "version": "1.0.2",
   "description": "Small footprint library for Angular projects.",
   "author": "@vlah.io",
   "license": "Apache-2.0",
@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build:angular-tools": "ng build angular-tools",
+    "docs": "npx compodoc -p projects/angular-tools/tsconfig.lib.json -d documentation -s",
     "index:refresh:angular-tools": "node ./.24vlh/scan.js && git add ./projects/angular-tools/src/public-api.ts",
     "lint:angular-tools": "npx eslint projects/angular-tools/src/**/*.{ts,html} --fix",
     "ng": "ng",
@@ -26,12 +27,16 @@
     "watch": "ng build --watch --configuration development"
   },
   "lint-staged": {
-    "*.{ts,html}": [
-      "npm run index:refresh:angular-tools",
+    "*": [
+      "npm run index:refresh:angular-tools"
+    ],
+    "projects/**/*.{ts,html}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{css,scss}": "stylelint --fix"
+    "projects/**/*.{css,scss}": [
+      "stylelint --fix"
+    ]
   },
   "dependencies": {
     "@24vlh/ts-assert": "^1.0.9",
@@ -59,6 +64,7 @@
     "@angular-eslint/utils": "^17.3.0",
     "@angular/cli": "^17.3.2",
     "@angular/compiler-cli": "^17.3.1",
+    "@compodoc/compodoc": "^1.1.23",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.4.0",

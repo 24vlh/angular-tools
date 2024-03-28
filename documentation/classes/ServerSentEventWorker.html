@@ -1,0 +1,1442 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>@24vlh/angular-tools documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">@24vlh/angular-tools documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >ServerSentEventWorker</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Injectable service for handling Server-Sent Events (SSE).
+This service provides methods to connect, disconnect, and reconnect to the SSE server.
+It also provides methods to listen to specific messages from the server.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#eventSource" >eventSource</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#eventSourceInitDic" >eventSourceInitDic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#eventSubject" >eventSubject</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#messages$" >messages$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#timeoutBackoff" >timeoutBackoff</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#connect" >connect</a>
+                            </li>
+                            <li>
+                                <a href="#disconnect" >disconnect</a>
+                            </li>
+                            <li>
+                                <a href="#listen$" >listen$</a>
+                            </li>
+                            <li>
+                                <a href="#pickAndMapMessage" >pickAndMapMessage</a>
+                            </li>
+                            <li>
+                                <a href="#pickMessage" >pickMessage</a>
+                            </li>
+                            <li>
+                                <a href="#reconnect" >reconnect</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#isDisconnected" >isDisconnected</a>
+                                </li>
+                                <li>
+                                    <a href="#EventSource" >EventSource</a>
+                                </li>
+                                <li>
+                                    <a href="#EventSubject" >EventSubject</a>
+                                </li>
+                                <li>
+                                    <a href="#Messages$" >Messages$</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, withCredentials: boolean | undefined, timeoutBackoffConfigs: <a href="../interfaces/TimeoutBackoffConfigs.html" target="_self">TimeoutBackoffConfigs</a>, ngZone: NgZone)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:38</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Constructs a new ServerSentEventWorker.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>url</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The URL of the SSE server.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>withCredentials</td>
+                                                  
+                                                        <td>
+                                                                    <code>boolean | undefined</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Whether to include credentials in the request.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>timeoutBackoffConfigs</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/TimeoutBackoffConfigs.html" target="_self" >TimeoutBackoffConfigs</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Configuration for the timeout backoff strategy.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>ngZone</td>
+                                                  
+                                                        <td>
+                                                                    <code>NgZone</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Angular&#39;s execution context.</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eventSource"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>eventSource</b></span>
+                        <a href="#eventSource"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventSource</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eventSourceInitDic"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>eventSourceInitDic</b></span>
+                        <a href="#eventSourceInitDic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventSourceInit | undefined</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>undefined</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:21</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eventSubject"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>eventSubject</b></span>
+                        <a href="#eventSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ServerSentEvent.html" target="_self" >Subject&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messages$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>messages$</b></span>
+                        <a href="#messages$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ServerSentEvent.html" target="_self" >Observable&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.eventSubject.asObservable()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="timeoutBackoff"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>timeoutBackoff</b></span>
+                        <a href="#timeoutBackoff"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>TimeoutBackoff(
+    (): void &#x3D;&gt; {
+      this.reconnect();
+    },
+    (): void &#x3D;&gt; {
+      this.disconnect();
+      this.eventSubject.complete();
+    },
+    this.timeoutBackoffConfigs.maxRetries,
+    this.timeoutBackoffConfigs.initialDelay,
+    this.timeoutBackoffConfigs.maxDelay
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="connect"></a>
+                    <span class="name">
+                        <span ><b>connect</b></span>
+                        <a href="#connect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>connect()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:123</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Connects to the SSE server.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.connect();
+ // =&gt; Connects to the SSE server.</code></pre></div></div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disconnect"></a>
+                    <span class="name">
+                        <span ><b>disconnect</b></span>
+                        <a href="#disconnect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>disconnect()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Disconnects from the SSE server.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.disconnect();
+ // =&gt; Disconnects from the SSE server.</code></pre></div></div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listen$"></a>
+                    <span class="name">
+                        <span ><b>listen$</b></span>
+                        <a href="#listen$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>listen$(operators: <a href="../interfaces/ServerSentEvent.html" target="_self">(OperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt; | R&gt; | MonoTypeOperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; | MonoTypeOperatorFunction&lt;R&gt;)[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:187</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>R</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Listens to specific messages from the SSE server.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.listen$();
+ // =&gt; An Observable of the server-sent events.</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>operators</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ServerSentEvent.html" target="_self" >(OperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt; | R&gt; | MonoTypeOperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; | MonoTypeOperatorFunction&lt;R&gt;)[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The operators to apply to the messages.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ServerSentEvent.html" target="_self" >Observable&lt;ServerSentEvent | R&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>an Observable of the filtered messages.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pickAndMapMessage"></a>
+                    <span class="name">
+                        <span ><b>pickAndMapMessage</b></span>
+                        <a href="#pickAndMapMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>pickAndMapMessage(filterCallback: (data: <a href="../interfaces/ServerSentEvent.html">ServerSentEvent<M | MessageEvent<string>></a>) => void, mapCallback: (data: <a href="../interfaces/ServerSentEvent.html">ServerSentEvent<M | MessageEvent<string>></a>) => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="227"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:227</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>R</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Picks and maps specific messages from the SSE server.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.pickAndMapMessage((data) =&gt; data.event.type === &#39;message&#39;, (data) =&gt; data.data);</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filterCallback</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The filter function to apply to the messages.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>mapCallback</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The map function to apply to the filtered messages.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;R&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>an Observable of the mapped messages.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pickMessage"></a>
+                    <span class="name">
+                        <span ><b>pickMessage</b></span>
+                        <a href="#pickMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>pickMessage(filterCallback: (data: <a href="../interfaces/ServerSentEvent.html">ServerSentEvent<M | MessageEvent<string>></a>) => void, operators: <a href="../interfaces/ServerSentEvent.html" target="_self">(OperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt; | R&gt; | MonoTypeOperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; | MonoTypeOperatorFunction&lt;R&gt;)[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="207"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:207</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>R</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Picks specific messages from the SSE server.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.pickMessage((data) =&gt; data.event.type === &#39;message&#39;);
+ // =&gt; An Observable of the picked messages.</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filterCallback</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The filter function to apply to the messages.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>operators</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ServerSentEvent.html" target="_self" >(OperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt; | R&gt; | MonoTypeOperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; | MonoTypeOperatorFunction&lt;R&gt;)[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The operators to apply to the filtered messages.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ServerSentEvent.html" target="_self" >Observable&lt;ServerSentEvent | R&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>an Observable of the picked messages.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reconnect"></a>
+                    <span class="name">
+                        <span ><b>reconnect</b></span>
+                        <a href="#reconnect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>reconnect()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="152"
+                                    class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:152</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reconnects to the SSE server.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.reconnect();
+ // =&gt; Reconnects to the SSE server.</code></pre></div></div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>void</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+            <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isDisconnected"></a>
+                        <span class="name"><b>isDisconnected</b><a href="#isDisconnected"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isDisconnected()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:72</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Checks if the connection to the SSE server is disconnected.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.isDisconnected;
+ // =&gt; Returns true if the connection to the SSE server is disconnected.</code></pre></div></div>
+
+                                <div>
+                                        <b>Example :</b>
+                                            <div>
+                                                <pre class="line-numbers"><code class="language-html"> sse.isDisconnected;
+ // =&amp;gt; Returns true if the connection to the SSE server is disconnected.</code></pre>
+                                            </div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="EventSource"></a>
+                        <span class="name"><b>EventSource</b><a href="#EventSource"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>EventSource()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:87</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Returns the EventSource object.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.EventSource;
+ // =&gt; Returns the EventSource object.</code></pre></div></div>
+
+                                <div>
+                                        <b>Example :</b>
+                                            <div>
+                                                <pre class="line-numbers"><code class="language-html"> sse.EventSource;
+ // =&amp;gt; Returns the EventSource object.</code></pre>
+                                            </div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>EventSource | undefined</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="EventSubject"></a>
+                        <span class="name"><b>EventSubject</b><a href="#EventSubject"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>EventSubject()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:99</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Returns the Subject for the server-sent events.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.EventSubject;
+ // =&gt; Returns the Subject for the server-sent events.</code></pre></div></div>
+
+                                <div>
+                                        <b>Example :</b>
+                                            <div>
+                                                <pre class="line-numbers"><code class="language-html"> sse.EventSubject;
+ // =&amp;gt; Returns the Subject for the server-sent events.</code></pre>
+                                            </div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/ServerSentEvent.html" target="_self" >Subject&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="Messages$"></a>
+                        <span class="name"><b>Messages$</b><a href="#Messages$"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>Messages$()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">projects/angular-tools/src/lib/workers/server-sent-event/server-sent-event.worker.ts:111</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Returns the Observable for the server-sent events.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-html"> sse.Messages$;
+ // =&gt; Returns the Observable for the server-sent events.</code></pre></div></div>
+
+                                <div>
+                                        <b>Example :</b>
+                                            <div>
+                                                <pre class="line-numbers"><code class="language-html"> sse.Messages$;
+ // =&amp;gt; Returns the Observable for the server-sent events.</code></pre>
+                                            </div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/ServerSentEvent.html" target="_self" >Observable&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { filter, map, MonoTypeOperatorFunction, Observable, OperatorFunction, Subject } from &#x27;rxjs&#x27;;
+import { Inject, NgZone, Optional } from &#x27;@angular/core&#x27;;
+import {
+  SERVER_SENT_EVENT_TIMEOUT_BACKOFF_CONFIGS,
+  SERVER_SENT_EVENT_URL,
+  SERVER_SENT_EVENT_WITH_CREDENTIALS
+} from &#x27;./server-sent-event.injection-token&#x27;;
+import { ServerSentEvent } from &#x27;./server-sent-event.interface&#x27;;
+import { NotInstanceOfType } from &#x27;@24vlh/ts-assert&#x27;;
+import { TimeoutBackoff } from &#x27;../../helpers&#x27;;
+import { TimeoutBackoffConfigs } from &#x27;../../helpers/timeout-backoff.interface&#x27;;
+
+/**
+ * Injectable service for handling Server-Sent Events (SSE).
+ * This service provides methods to connect, disconnect, and reconnect to the SSE server.
+ * It also provides methods to listen to specific messages from the server.
+ *
+ * @template M - The type of the messages.
+ */
+export class ServerSentEventWorker&lt;M&gt; {
+  private readonly eventSourceInitDic: EventSourceInit | undefined &#x3D; undefined;
+  private eventSource!: EventSource;
+  private eventSubject: Subject&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; &#x3D;
+    new Subject&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;();
+  private messages$: Observable&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; &#x3D;
+    this.eventSubject.asObservable();
+  private timeoutBackoff: (reset?: boolean) &#x3D;&gt; void &#x3D; TimeoutBackoff(
+    (): void &#x3D;&gt; {
+      this.reconnect();
+    },
+    (): void &#x3D;&gt; {
+      this.disconnect();
+      this.eventSubject.complete();
+    },
+    this.timeoutBackoffConfigs.maxRetries,
+    this.timeoutBackoffConfigs.initialDelay,
+    this.timeoutBackoffConfigs.maxDelay
+  );
+
+  /**
+   * Constructs a new ServerSentEventWorker.
+   *
+   * @param url - The URL of the SSE server.
+   * @param withCredentials - Whether to include credentials in the request.
+   * @param timeoutBackoffConfigs - Configuration for the timeout backoff strategy.
+   * @param ngZone - Angular&#x27;s execution context.
+   */
+  constructor(
+    @Inject(SERVER_SENT_EVENT_URL) private url: string,
+    @Inject(SERVER_SENT_EVENT_WITH_CREDENTIALS)
+    @Optional()
+    withCredentials: boolean | undefined &#x3D; undefined,
+    @Inject(SERVER_SENT_EVENT_TIMEOUT_BACKOFF_CONFIGS)
+    @Optional()
+    private timeoutBackoffConfigs: TimeoutBackoffConfigs &#x3D; {},
+    private ngZone: NgZone
+  ) {
+    if (withCredentials) {
+      this.eventSourceInitDic &#x3D; { withCredentials };
+    }
+    this.connect();
+  }
+
+  /**
+   * Checks if the connection to the SSE server is disconnected.
+   *
+   * @returns true if disconnected, false otherwise.
+   * @example
+   *  sse.isDisconnected;
+   *  // &#x3D;&gt; Returns true if the connection to the SSE server is disconnected.
+   */
+  get isDisconnected(): boolean {
+    return (
+      NotInstanceOfType(this.eventSource, EventSource) ||
+      this.eventSource.readyState &#x3D;&#x3D;&#x3D; EventSource.CLOSED
+    );
+  }
+
+  /**
+   * Returns the EventSource object.
+   *
+   * @returns the EventSource object.
+   * @example
+   *  sse.EventSource;
+   *  // &#x3D;&gt; Returns the EventSource object.
+   */
+  get EventSource(): EventSource | undefined {
+    return this.eventSource;
+  }
+
+  /**
+   * Returns the Subject for the server-sent events.
+   *
+   * @returns the Subject for the server-sent events.
+   * @example
+   *  sse.EventSubject;
+   *  // &#x3D;&gt; Returns the Subject for the server-sent events.
+   */
+  get EventSubject(): Subject&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; {
+    return this.eventSubject;
+  }
+
+  /**
+   * Returns the Observable for the server-sent events.
+   *
+   * @returns the Observable for the server-sent events.
+   * @example
+   *  sse.Messages$;
+   *  // &#x3D;&gt; Returns the Observable for the server-sent events.
+   */
+  get Messages$(): Observable&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt; {
+    return this.messages$;
+  }
+
+  /**
+   * Connects to the SSE server.
+   *
+   * @returns void
+   * @example
+   *  sse.connect();
+   *  // &#x3D;&gt; Connects to the SSE server.
+   */
+  connect(): void {
+    this.eventSource &#x3D; new EventSource(this.url, this.eventSourceInitDic);
+
+    this.eventSource.onmessage &#x3D; (event: MessageEvent&lt;string&gt;): void &#x3D;&gt; {
+      this.ngZone.run((): void &#x3D;&gt; {
+        this.eventSubject.next({
+          event,
+          data: JSON.parse(event.data) as M
+        });
+      });
+    };
+
+    this.eventSource.onerror &#x3D; (): void &#x3D;&gt; {
+      this.timeoutBackoff();
+    };
+
+    this.eventSource.onopen &#x3D; (): void &#x3D;&gt; {
+      this.timeoutBackoff(true);
+    };
+  }
+
+  /**
+   * Reconnects to the SSE server.
+   *
+   * @returns void
+   * @example
+   *  sse.reconnect();
+   *  // &#x3D;&gt; Reconnects to the SSE server.
+   */
+  reconnect(): void {
+    this.disconnect();
+    this.connect();
+  }
+
+  /**
+   * Disconnects from the SSE server.
+   *
+   * @returns void
+   * @example
+   *  sse.disconnect();
+   *  // &#x3D;&gt; Disconnects from the SSE server.
+   */
+  disconnect(): void {
+    this.ngZone.run((): void &#x3D;&gt; {
+      if (
+        this.eventSource &amp;&amp;
+        this.eventSource.readyState !&#x3D;&#x3D; EventSource.CLOSED
+      ) {
+        this.eventSource.close();
+      } else {
+        console.warn(&#x27;EventSource is already closed.&#x27;);
+      }
+    });
+  }
+
+  /**
+   * Listens to specific messages from the SSE server.
+   *
+   * @param operators - The operators to apply to the messages.
+   * @returns an Observable of the filtered messages.
+   * @example
+   *  sse.listen$();
+   *  // &#x3D;&gt; An Observable of the server-sent events.
+   */
+  listen$&lt;R&gt;(
+    ...operators: (
+      | OperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;, R&gt;
+      | MonoTypeOperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;
+      | MonoTypeOperatorFunction&lt;R&gt;
+    )[]
+  ): Observable&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt; | R&gt; {
+    return this.Messages$.pipe(...(operators as []));
+  }
+
+  /**
+   * Picks specific messages from the SSE server.
+   *
+   * @param filterCallback - The filter function to apply to the messages.
+   * @param operators - The operators to apply to the filtered messages.
+   * @returns an Observable of the picked messages.
+   * @example
+   *  sse.pickMessage((data) &#x3D;&gt; data.event.type &#x3D;&#x3D;&#x3D; &#x27;message&#x27;);
+   *  // &#x3D;&gt; An Observable of the picked messages.
+   */
+  pickMessage&lt;R&gt;(
+    filterCallback: (data: ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;) &#x3D;&gt; boolean,
+    ...operators: (
+      | OperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;, R&gt;
+      | MonoTypeOperatorFunction&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;&gt;
+      | MonoTypeOperatorFunction&lt;R&gt;
+    )[]
+  ): Observable&lt;ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt; | R&gt; {
+    return this.Messages$.pipe(filter(filterCallback), ...(operators as []));
+  }
+
+  /**
+   * Picks and maps specific messages from the SSE server.
+   *
+   * @param filterCallback - The filter function to apply to the messages.
+   * @param mapCallback - The map function to apply to the filtered messages.
+   * @returns an Observable of the mapped messages.
+   * @example
+   *  sse.pickAndMapMessage((data) &#x3D;&gt; data.event.type &#x3D;&#x3D;&#x3D; &#x27;message&#x27;, (data) &#x3D;&gt; data.data);
+   */
+  pickAndMapMessage&lt;R&gt;(
+    filterCallback: (data: ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;) &#x3D;&gt; boolean,
+    mapCallback: (data: ServerSentEvent&lt;M, MessageEvent&lt;string&gt;&gt;) &#x3D;&gt; R
+  ): Observable&lt;R&gt; {
+    return this.Messages$.pipe(filter(filterCallback), map(mapCallback));
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'ServerSentEventWorker.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
