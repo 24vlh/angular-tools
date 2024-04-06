@@ -2,6 +2,7 @@ module.exports = {
   extends: '../../.eslintrc.json',
   ignorePatterns: [
     '!**/*',
+    'src/assets/http-server.ts',
     'src/assets/websocket-server.ts',
     'src/assets/server-sent-event-server.ts'
   ],

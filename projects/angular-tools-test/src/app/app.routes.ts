@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { WsComponent } from './ws/ws.component';
 import { SseComponent } from './sse/sse.component';
 import { StoreComponent } from './store/store.component';
+import { HttpComponent } from './http/http.component';
 
 export const routes: Routes = [
   {
@@ -15,5 +16,9 @@ export const routes: Routes = [
   {
     path: 'store',
     component: StoreComponent
+  },
+  {
+    path: 'http',
+    component: HttpComponent
   }
 ];

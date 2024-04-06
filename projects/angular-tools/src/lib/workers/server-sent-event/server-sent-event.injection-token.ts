@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { TimeoutBackoffConfigs } from '../../helpers/timeout-backoff.interface';
+import { TimeoutBackoffConfigs } from '../../helpers';
 
 /**
  * InjectionToken for the server-sent event URL.

@@ -116,6 +116,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/CustomEventProviderFactoryConfigs.html" data-type="entity-link" >CustomEventProviderFactoryConfigs</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/HttpSubmitConfig.html" data-type="entity-link" >HttpSubmitConfig</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/PollingConfigs.html" data-type="entity-link" >PollingConfigs</a>
                             </li>
                             <li class="link">

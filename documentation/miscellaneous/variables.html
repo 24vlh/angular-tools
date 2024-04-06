@@ -143,6 +143,12 @@
                             <a href="#GetIn" title="projects/angular-tools/src/lib/workers/store/store.helper.ts" ><b>GetIn</b>&nbsp;&nbsp;&nbsp;(projects/.../store.helper.ts)</a>
                         </li>
                         <li>
+                            <a href="#HttpRequestFactory" title="projects/angular-tools/src/lib/helpers/http/http-submit.ts" ><b>HttpRequestFactory</b>&nbsp;&nbsp;&nbsp;(projects/.../http-submit.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#HttpSubmitFactory" title="projects/angular-tools/src/lib/helpers/http/http-submit.ts" ><b>HttpSubmitFactory</b>&nbsp;&nbsp;&nbsp;(projects/.../http-submit.ts)</a>
+                        </li>
+                        <li>
                             <a href="#PollFactory" title="projects/angular-tools/src/lib/workers/polling/polling.helper.ts" ><b>PollFactory</b>&nbsp;&nbsp;&nbsp;(projects/.../polling.helper.ts)</a>
                         </li>
                         <li>
@@ -767,6 +773,150 @@ If a notSetValue is provided, the observable emits the notSetValue if the compar
 </div>
                 </td>
             </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>projects/angular-tools/src/lib/helpers/http/http-submit.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="HttpRequestFactory"></a>
+                    <span class="name">
+                        <span ><b>HttpRequestFactory</b></span>
+                        <a href="#HttpRequestFactory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&lt;T&gt;(
+  http: HttpClient,
+  url: string,
+  type: &#x27;POST&#x27; | &#x27;PUT&#x27; | &#x27;PATCH&#x27;,
+  options?: HttpRequest&lt;T&gt;,
+  retryCount &#x3D; 3,
+  onlyHttpResponses?: boolean
+) &#x3D;&gt; {
+  if (EmptyString(url)) {
+    throw new Error(&#x27;URL is required&#x27;);
+  }
+
+  const subject: Subject&lt;T&gt; &#x3D; new Subject&lt;T&gt;();
+  const observable: Observable&lt;T&gt; &#x3D; subject.asObservable();
+
+  const filterCallback &#x3D;
+    OfUndefinedType(onlyHttpResponses) || OfTrueType(onlyHttpResponses)
+      ? (event: HttpEvent&lt;unknown&gt;): boolean &#x3D;&gt; event instanceof HttpResponse
+      : (): boolean &#x3D;&gt; true;
+
+  return {
+    submit: (data: T) &#x3D;&gt; subject.next(data),
+    request$: observable.pipe(
+      distinctUntilChanged(),
+      switchMap((data: T) &#x3D;&gt; {
+        const req: HttpRequest&lt;T&gt; &#x3D; new HttpRequest&lt;T&gt;(
+          type,
+          url,
+          data,
+          options
+        );
+        return http.request(req).pipe(retry(retryCount));
+      }),
+      filter(filterCallback)
+    )
+  };
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="HttpSubmitFactory"></a>
+                    <span class="name">
+                        <span ><b>HttpSubmitFactory</b></span>
+                        <a href="#HttpSubmitFactory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&lt;T&gt;(
+  http: HttpClient,
+  configs: HttpSubmitConfig&lt;T&gt;
+) &#x3D;&gt; {
+  if (EmptyString(configs.url)) {
+    throw new Error(&#x27;URL is required&#x27;);
+  }
+
+  configs.filterCallback &#x3D;
+    OfUndefinedType(configs.onlyHttpResponses) ||
+    OfTrueType(configs.onlyHttpResponses)
+      ? (event: HttpEvent&lt;unknown&gt;): boolean &#x3D;&gt; event instanceof HttpResponse
+      : (): boolean &#x3D;&gt; true;
+
+  const postSubject: Subject&lt;T&gt; &#x3D; new Subject&lt;T&gt;();
+  const putSubject: Subject&lt;T&gt; &#x3D; new Subject&lt;T&gt;();
+  const patchSubject: Subject&lt;T&gt; &#x3D; new Subject&lt;T&gt;();
+
+  const postObservable: Observable&lt;T&gt; &#x3D; postSubject.asObservable();
+  const putObservable: Observable&lt;T&gt; &#x3D; putSubject.asObservable();
+  const patchObservable: Observable&lt;T&gt; &#x3D; patchSubject.asObservable();
+
+  return {
+    post: (data: T) &#x3D;&gt; postSubject.next(data),
+    put: (data: T) &#x3D;&gt; putSubject.next(data),
+    patch: (data: T) &#x3D;&gt; patchSubject.next(data),
+    request$: merge(
+      postObservable.pipe(
+        distinctUntilChanged(),
+        switchMap((data: T) &#x3D;&gt; {
+          const req: HttpRequest&lt;T&gt; &#x3D; new HttpRequest&lt;T&gt;(
+            &#x27;POST&#x27;,
+            configs.postUrl ?? configs.url,
+            data,
+            configs.postOptions ?? configs.options ?? {}
+          );
+          return http.request(req).pipe(retry(configs.retryCount ?? 3));
+        })
+      ),
+      putObservable.pipe(
+        distinctUntilChanged(),
+        switchMap((data: T) &#x3D;&gt; {
+          const req: HttpRequest&lt;T&gt; &#x3D; new HttpRequest&lt;T&gt;(
+            &#x27;PUT&#x27;,
+            configs.putUrl ?? configs.url,
+            data,
+            configs.putOptions ?? configs.options ?? {}
+          );
+          return http.request(req).pipe(retry(configs.retryCount ?? 3));
+        })
+      ),
+      patchObservable.pipe(
+        distinctUntilChanged(),
+        switchMap((data: T) &#x3D;&gt; {
+          const req: HttpRequest&lt;T&gt; &#x3D; new HttpRequest&lt;T&gt;(
+            &#x27;PATCH&#x27;,
+            configs.patchUrl ?? configs.url,
+            data,
+            configs.patchOptions ?? configs.options ?? {}
+          );
+          return http.request(req).pipe(retry(configs.retryCount ?? 3));
+        })
+      )
+    ).pipe(filter(configs.filterCallback))
+  };
+}</code>
+                    </td>
+                </tr>
+
 
         </tbody>
     </table>

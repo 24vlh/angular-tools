@@ -40,7 +40,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
     @Inject(STORE_WORKER_INITIAL_STATE) private initialState: T
   ) {
     if (!OfObjectType(initialState)) {
-      throw new Error('Invalid initial state. Object expected.');
+      throw new Error('[constructor] Invalid initial state. Object expected.');
     }
 
     this.state$ = new BehaviorSubject<T>(initialState);
@@ -118,7 +118,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
     notSetValue: R | undefined = undefined
   ): R | undefined {
     if (!this.map.has(key)) {
-      console.error(`Key ${String(key)} does not exist in the state.`);
+      console.error(`[get] Key ${String(key)} does not exist in the state.`);
     }
     return this.map.get<R | undefined>(key, notSetValue);
   }
@@ -158,7 +158,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
 
     if (!this.map.hasIn(searchKeyPath)) {
       console.error(
-        `Search key path ${String(searchKeyPath)} does not exist in the state.`
+        `[getIn] Search key path ${String(searchKeyPath)} does not exist in the state.`
       );
     }
 
@@ -200,7 +200,9 @@ export class StoreWorker<T extends Record<string, unknown>> {
     return this.map$.pipe(
       map((mappedState: MapOf<T>) => {
         if (!mappedState.has(key)) {
-          console.error(`Key ${String(key)} does not exist in the state.`);
+          console.error(
+            `[select$] Key ${String(key)} does not exist in the state.`
+          );
         }
 
         return mappedState.get<R | undefined>(key, notSetValue);
@@ -260,7 +262,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
 
         if (!mappedState.hasIn(searchKeyPath)) {
           console.error(
-            `Search key path ${String(searchKeyPath)} does not exist in the state.`
+            `[selectIn$] Search key path ${String(searchKeyPath)} does not exist in the state.`
           );
         }
 
@@ -297,11 +299,11 @@ export class StoreWorker<T extends Record<string, unknown>> {
    */
   public set<K extends keyof T>(key: K, value: T[K]): void {
     if (EmptyString(key)) {
-      throw new Error('Invalid key. Non-empty string expected.');
+      throw new Error('[set] Invalid key. Non-empty string expected.');
     }
 
     if (!this.map.has(key)) {
-      throw new Error(`Key ${String(key)} does not exist in the state.`);
+      throw new Error(`[set] Key ${String(key)} does not exist in the state.`);
     }
 
     this.state$.next(this.map.set(key, value).toObject() as T);
@@ -325,13 +327,13 @@ export class StoreWorker<T extends Record<string, unknown>> {
 
     if (EmptyArray(searchKeyPath)) {
       throw new Error(
-        'Invalid search key path. Non-empty array or string expected.'
+        '[setIn] Invalid search key path. Non-empty array or string expected.'
       );
     }
 
     if (!this.map.hasIn(searchKeyPath)) {
       throw new Error(
-        `Search key path ${String(searchKeyPath)} does not exist in the state.`
+        `[setIn] Search key path ${String(searchKeyPath)} does not exist in the state.`
       );
     }
 

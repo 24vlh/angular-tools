@@ -14,8 +14,7 @@ import {
 } from './server-sent-event.injection-token';
 import { ServerSentEvent } from './server-sent-event.interface';
 import { NotInstanceOfType } from '@24vlh/ts-assert';
-import { TimeoutBackoff } from '../../helpers';
-import { TimeoutBackoffConfigs } from '../../helpers/timeout-backoff.interface';
+import { TimeoutBackoff, TimeoutBackoffConfigs } from '../../helpers';
 
 /**
  * Injectable service for handling Server-Sent Events (SSE).

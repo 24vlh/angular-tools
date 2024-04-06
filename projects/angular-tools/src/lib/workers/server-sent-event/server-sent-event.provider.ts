@@ -1,6 +1,6 @@
 import { ServerSentEventWorker } from './server-sent-event.worker';
 import { FactoryProvider, InjectionToken, NgZone } from '@angular/core';
-import { TimeoutBackoffConfigs } from '../../helpers/timeout-backoff.interface';
+import { TimeoutBackoffConfigs } from '../../helpers';
 
 /**
  * Factory function to create a provider for the server-sent event worker

@@ -30,7 +30,7 @@ describe('StoreWorker', (): void => {
   it('should throw error when initial state is not an object', (): void => {
     expect(
       () => new StoreWorker(null as unknown as Record<string, unknown>)
-    ).toThrowError('Invalid initial state. Object expected.');
+    ).toThrowError('[constructor] Invalid initial state. Object expected.');
   });
 
   it('should return current state', (): void => {
@@ -52,13 +52,13 @@ describe('StoreWorker', (): void => {
 
   it('should throw error when updating non-existing key', (): void => {
     expect(() => service.set('nonExistingKey', 'value')).toThrowError(
-      'Key nonExistingKey does not exist in the state.'
+      '[set] Key nonExistingKey does not exist in the state.'
     );
   });
 
   it('should throw error when updating non-existing key path', (): void => {
     expect(() => service.setIn('nonExistingKeyPath', 'value')).toThrowError(
-      'Search key path nonExistingKeyPath does not exist in the state.'
+      '[setIn] Search key path nonExistingKeyPath does not exist in the state.'
     );
   });
 
@@ -217,7 +217,7 @@ describe('StoreWorker', (): void => {
     const key = 'nonExistingKey';
     const value = 'value';
     expect(() => service.set(key, value)).toThrowError(
-      `Key ${key} does not exist in the state.`
+      `[set] Key ${key} does not exist in the state.`
     );
   });
 
@@ -241,7 +241,7 @@ describe('StoreWorker', (): void => {
     const keyPath: string[] = ['nonExistingKey1', 'nonExistingKey2'];
     const value = 'value';
     expect(() => service.setIn(keyPath, value)).toThrowError(
-      `Search key path nonExistingKey1,nonExistingKey2 does not exist in the state.`
+      `[setIn] Search key path nonExistingKey1,nonExistingKey2 does not exist in the state.`
     );
   });
 
@@ -264,7 +264,7 @@ describe('StoreWorker', (): void => {
       .subscribe({
         error: (err: Error): void => {
           expect(err.message).toEqual(
-            `Key ${key} does not exist in the state.`
+            `[set] Key ${key} does not exist in the state.`
           );
           done();
         }
@@ -290,7 +290,7 @@ describe('StoreWorker', (): void => {
       .subscribe({
         error: (err: Error): void => {
           expect(err.message).toEqual(
-            `Search key path nonExistingKey1,nonExistingKey2 does not exist in the state.`
+            `[setIn] Search key path nonExistingKey1,nonExistingKey2 does not exist in the state.`
           );
           done();
         }

@@ -1,0 +1,21 @@
+<h1>Http Helpers</h1>
+
+<p>Local mock server is a dependency to this example.</p>
+
+<p>
+  Start the server by running <code>npm run start:http</code> in the root of the
+  project.
+</p>
+
+<div>
+  <form [formGroup]="form">
+    <input formControlName="title" name="Title" type="text" />
+    <input (change)="handle($event)" multiple name="File" type="file" />
+    <p class="mt-3">
+      <button (click)="post()" type="submit">Post</button>
+      <button (click)="put()" class="ms-2" type="submit">Put</button>
+      <button (click)="patch()" class="ms-2" type="submit">Patch</button>
+      <button (click)="upload()" class="ms-2" type="submit">Upload</button>
+    </p>
+  </form>
+</div>
