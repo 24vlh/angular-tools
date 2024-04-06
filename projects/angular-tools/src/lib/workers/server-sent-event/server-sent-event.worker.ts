@@ -6,7 +6,7 @@ import {
   OperatorFunction,
   Subject
 } from 'rxjs';
-import { Inject, NgZone, Optional } from '@angular/core';
+import { Inject, Injectable, NgZone, Optional } from '@angular/core';
 import {
   SERVER_SENT_EVENT_TIMEOUT_BACKOFF_CONFIGS,
   SERVER_SENT_EVENT_URL,
@@ -24,6 +24,7 @@ import { TimeoutBackoffConfigs } from '../../helpers/timeout-backoff.interface';
  *
  * @template M - The type of the messages.
  */
+@Injectable()
 export class ServerSentEventWorker<M> {
   private readonly eventSourceInitDic: EventSourceInit | undefined = undefined;
   private eventSource!: EventSource;

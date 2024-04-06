@@ -1,4 +1,4 @@
-import { Inject, Optional } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   WebSocketSubject,
   WebSocketSubjectConfig
@@ -31,6 +31,7 @@ import { ExponentiallyBackoff } from '../../helpers';
  *
  * @template M - The type of messages that the websocket will handle.
  */
+@Injectable()
 export class WebsocketWorker<M> {
   private websocketConnection!: WebSocketSubject<M>;
   private websocketSubscription: Subscription | null = null;

@@ -16,7 +16,7 @@ import {
   OfStringType
 } from '@24vlh/ts-assert';
 import { Map, MapOf } from 'immutable';
-import { Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { STORE_WORKER_INITIAL_STATE } from './store.injection-token';
 
 /**
@@ -24,6 +24,7 @@ import { STORE_WORKER_INITIAL_STATE } from './store.injection-token';
  *
  * @template T - The type of the state.
  */
+@Injectable()
 export class StoreWorker<T extends Record<string, unknown>> {
   private readonly data$: Observable<T>;
   private state$: BehaviorSubject<T>;

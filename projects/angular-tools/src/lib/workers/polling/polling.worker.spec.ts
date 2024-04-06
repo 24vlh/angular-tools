@@ -48,4 +48,27 @@ describe('PollingWorker', () => {
     jasmine.clock().uninstall();
     expect(emissions).toBe(3);
   });
+
+  it('should bootstrap a polling session and return a PollingManager', (done: DoneFn): void => {
+    jasmine.clock().install();
+    const url = 'https://api.example.com/data';
+    let emissions = 0;
+
+    const pollingManager = service.bootstrapSession(url, 50, {
+      callback: (data): void => {
+        ++emissions;
+        expect(data).toBe(`test${emissions}`);
+        if (emissions === 3) {
+          expect(data).toBe('test3');
+          pollingManager.stop();
+          done();
+        }
+      }
+    });
+
+    jasmine.clock().tick(50);
+    jasmine.clock().tick(50);
+    jasmine.clock().uninstall();
+    expect(emissions).toBe(3);
+  });
 });

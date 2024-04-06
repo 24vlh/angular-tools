@@ -82,7 +82,7 @@ export const StartPolling = <T>(
  */
 export const PollFactory = <T>(
   interval: number,
-  configs: Omit<PollingConfigs<T>, 'httpOptions'>
+  configs?: Omit<PollingConfigs<T>, 'httpOptions'>
 ): ((httpGetCall: Observable<T>) => Observable<T>) => {
   return (httpGetCall: Observable<T>) =>
     StartPolling(httpGetCall, interval, configs);
@@ -112,7 +112,7 @@ export const PollFactory = <T>(
 export const BootstrapPollingSession = <T>(
   httpGetCall: Observable<T>,
   interval: number,
-  configs: Omit<PollingConfigs<T>, 'httpOptions'>
+  configs?: Omit<PollingConfigs<T>, 'httpOptions'>
 ): PollingManager<T> => {
   const observable: Observable<T> = StartPolling(
     httpGetCall,

@@ -1,11 +1,13 @@
 import { SubscriptionLike } from 'rxjs';
 import { NotEmptyArray, OfObjectType } from '@24vlh/ts-assert';
+import { Injectable } from '@angular/core';
 
 /**
  * `SubscriptionWorker` is a service class that manages subscriptions.
  * It provides methods to add, map, and unsubscribe from subscriptions.
  * It also provides methods to manage mapped subscriptions.
  */
+@Injectable()
 export class SubscriptionWorker {
   private subs: Set<SubscriptionLike> = new Set<SubscriptionLike>();
   private mappedSubs: Map<string, SubscriptionLike> = new Map<
