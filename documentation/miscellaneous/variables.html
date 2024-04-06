@@ -221,7 +221,7 @@
                         <i>Default value : </i><code>&lt;T&gt;(
   httpGetCall: Observable&lt;T&gt;,
   interval: number,
-  configs: Omit&lt;PollingConfigs&lt;T&gt;, &#x27;httpOptions&#x27;&gt;
+  configs?: Omit&lt;PollingConfigs&lt;T&gt;, &#x27;httpOptions&#x27;&gt;
 ): PollingManager&lt;T&gt; &#x3D;&gt; {
   const observable: Observable&lt;T&gt; &#x3D; StartPolling(
     httpGetCall,
@@ -283,7 +283,7 @@ The polling manager is created with the <code>httpGetCall</code> function, which
                     <td class="col-md-4">
                         <i>Default value : </i><code>&lt;T&gt;(
   interval: number,
-  configs: Omit&lt;PollingConfigs&lt;T&gt;, &#x27;httpOptions&#x27;&gt;
+  configs?: Omit&lt;PollingConfigs&lt;T&gt;, &#x27;httpOptions&#x27;&gt;
 ): ((httpGetCall: Observable&lt;T&gt;) &#x3D;&gt; Observable&lt;T&gt;) &#x3D;&gt; {
   return (httpGetCall: Observable&lt;T&gt;) &#x3D;&gt;
     StartPolling(httpGetCall, interval, configs);

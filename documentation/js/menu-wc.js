@@ -74,26 +74,36 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             <li class="link">
                                 <a href="classes/CustomEventApi.html" data-type="entity-link" >CustomEventApi</a>
                             </li>
-                            <li class="link">
-                                <a href="classes/CustomEventWorker.html" data-type="entity-link" >CustomEventWorker</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/PollingWorker.html" data-type="entity-link" >PollingWorker</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/ServerSentEventWorker.html" data-type="entity-link" >ServerSentEventWorker</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/StoreWorker.html" data-type="entity-link" >StoreWorker</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/SubscriptionWorker.html" data-type="entity-link" >SubscriptionWorker</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/WebsocketWorker.html" data-type="entity-link" >WebsocketWorker</a>
-                            </li>
                         </ul>
                     </li>
+                        <li class="chapter">
+                            <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ? 'data-bs-target="#injectables-links"' :
+                                'data-bs-target="#xs-injectables-links"' }>
+                                <span class="icon ion-md-arrow-round-down"></span>
+                                <span>Injectables</span>
+                                <span class="icon ion-ios-arrow-down"></span>
+                            </div>
+                            <ul class="links collapse " ${ isNormalMode ? 'id="injectables-links"' : 'id="xs-injectables-links"' }>
+                                <li class="link">
+                                    <a href="injectables/CustomEventWorker.html" data-type="entity-link" >CustomEventWorker</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/PollingWorker.html" data-type="entity-link" >PollingWorker</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/ServerSentEventWorker.html" data-type="entity-link" >ServerSentEventWorker</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/StoreWorker.html" data-type="entity-link" >StoreWorker</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/SubscriptionWorker.html" data-type="entity-link" >SubscriptionWorker</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/WebsocketWorker.html" data-type="entity-link" >WebsocketWorker</a>
+                                </li>
+                            </ul>
+                        </li>
                     <li class="chapter">
                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ? 'data-bs-target="#interfaces-links"' :
                             'data-bs-target="#xs-interfaces-links"' }>
