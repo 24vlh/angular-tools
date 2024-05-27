@@ -63,7 +63,7 @@
     "@angular-eslint/schematics": "^17.4.0",
     "@angular-eslint/template-parser": "^17.4.0",
     "@angular-eslint/utils": "^17.4.0",
-    "@angular/cli": "^17.3.6",
+    "@angular/cli": "^18.0.1",
     "@angular/compiler-cli": "^17.3.7",
     "@compodoc/compodoc": "^1.1.24",
     "@types/jasmine": "^5.1.4",
