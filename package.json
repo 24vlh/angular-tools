@@ -1,6 +1,6 @@
 {
   "name": "@24vlh/angular-tools",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Small footprint library for Angular projects.",
   "author": "@vlah.io",
   "license": "Apache-2.0",
@@ -40,8 +40,8 @@
     ]
   },
   "dependencies": {
-    "@24vlh/ts-assert": "^1.0.9",
-    "@24vlh/ts-helpers": "^1.0.0",
+    "@24vlh/ts-assert": "^1.0.10",
+    "@24vlh/ts-helpers": "^1.0.1",
     "@angular/animations": "^17.3.10",
     "@angular/common": "^17.3.10",
     "@angular/compiler": "^17.3.10",
