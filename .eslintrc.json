@@ -14,7 +14,7 @@
         "plugin:@typescript-eslint/stylistic-type-checked",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:sonarjs/recommended",
+        "plugin:sonarjs/recommended-legacy",
         "prettier"
       ],
       "parser": "@typescript-eslint/parser",
