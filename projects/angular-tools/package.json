@@ -1,6 +1,6 @@
 {
   "name": "@24vlh/angular-tools",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Small footprint library for Angular projects.",
   "author": "@vlah.io",
   "license": "Apache-2.0",
@@ -11,16 +11,16 @@
     "angular server sent events"
   ],
   "peerDependencies": {
-    "@24vlh/ts-assert": "^1.0.10",
-    "@24vlh/ts-helpers": "^1.0.1",
-    "@angular/common": "^18.0.1",
-    "@angular/core": "^18.0.1",
-    "immutable": "^5.0.0-beta.5",
+    "@24vlh/ts-assert": "^1.0.11",
+    "@24vlh/ts-helpers": "^1.0.2",
+    "@angular/common": "^18.1.4",
+    "@angular/core": "^18.1.4",
+    "immutable": "^5.0.0-rc.1",
     "rxjs": "^7.8.1",
-    "zone.js": "^0.14.6"
+    "zone.js": "^0.14.10"
   },
   "dependencies": {
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "sideEffects": false
 }
