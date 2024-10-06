@@ -13,8 +13,8 @@
   "peerDependencies": {
     "@24vlh/ts-assert": "^1.0.12",
     "@24vlh/ts-helpers": "^1.0.3",
-    "@angular/common": "^18.2.3",
-    "@angular/core": "^18.2.3",
+    "@angular/common": "^18.2.7",
+    "@angular/core": "^18.2.7",
     "immutable": "^5.0.0-rc.1",
     "rxjs": "^7.8.1",
     "zone.js": "^0.14.10"
