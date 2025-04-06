@@ -7,7 +7,7 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-edge-launcher'),
+      require('karma-chrome-launcher'),
       require('karma-mocha-reporter'),
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma')
@@ -35,11 +35,17 @@ module.exports = function (config) {
       ]
     },
     reporters: ['mocha'],
-    browsers: ['EdgeHeadless'],
+    browsers: ['ChromiumHeadless'],
     customLaunchers: {
-      EdgeHeadless: {
-        base: 'Edge',
-        flags: ['--headless', '--disable-gpu', 'window-size=1280,1024']
+      ChromiumHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          '--window-size=1280,1024'
+        ],
+        executablePath: process.env.EDGE_BIN
       }
     },
     singleRun: true,

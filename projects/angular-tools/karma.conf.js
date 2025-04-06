@@ -43,14 +43,15 @@ module.exports = function (config) {
       }
     },
     reporters: ['mocha'],
-    browsers: ['ChromeWithoutSandbox'],
+    browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
-      ChromeWithoutSandbox: {
-        base: 'Chrome',
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
         flags: [
           '--no-sandbox',
           '--headless',
           '--disable-gpu',
+          '--disable-dev-shm-usage',
           '--code-coverage',
           '--remote-debugging-port=9222'
         ]
