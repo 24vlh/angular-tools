@@ -94,7 +94,7 @@
     "prettier": "^3.5.3",
     "puppeteer": "^24.6.0",
     "stylelint": "^16.17.0",
-    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard": "^38.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "ws": "^8.18.1"
