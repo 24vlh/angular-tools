@@ -17,7 +17,6 @@ import {
 })
 export class WsComponent {
   items: Record<string, unknown>[] = [];
-  message = 'Some random message sent over the websocket';
   subscription: Subscription | null = null;
 
   constructor(private ws: WebsocketWorker<Record<string, unknown>>) {}
@@ -31,12 +30,10 @@ export class WsComponent {
       this.connect();
     }
     if (!this.subscription) {
-      this.ws.send({ content: this.message });
       this.subscription = this.ws
         .listen<Record<string, unknown>>()
         .subscribe((data: Record<string, unknown>): void => {
           this.items.push(data);
-          this.ws.send({ content: this.message });
         });
     }
   }

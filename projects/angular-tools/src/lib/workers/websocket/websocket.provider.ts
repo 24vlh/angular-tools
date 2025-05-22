@@ -38,7 +38,7 @@ import { FactoryProvider, InjectionToken } from '@angular/core';
  *  // => The websocket worker has an observer for open events that logs 'open'.
  *  // => The websocket worker has an observer for close events that logs 'close'.
  *  const workerInjectionToken = new InjectionToken<WebsocketWorker<M>>('injectionToken');
- *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080', workerInjectionToken, null, { next: () => console.log('open') }, { next: () => console.log('close') })]
+ *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080', workerInjectionToken, undefined, { next: () => console.log('open') }, { next: () => console.log('close') })]
  *  // => Provides the websocket worker.
  *  // => The websocket worker is used to manage the websocket connection.
  *  // => The websocket worker has an observer for open events that logs 'open'.
@@ -49,9 +49,11 @@ export const WEBSOCKET_PROVIDER_FACTORY = <M>(
   workerInjectionToken:
     | typeof WebsocketWorker<M>
     | InjectionToken<WebsocketWorker<M>> = WebsocketWorker,
-  exponentialBackoffOptions: WebsocketExponentialBackoffOptions | null = null,
-  openEventObserver: WebsocketEventObserver | null = null,
-  closeEventObserver: WebsocketEventObserver | null = null
+  exponentialBackoffOptions:
+    | WebsocketExponentialBackoffOptions
+    | undefined = undefined,
+  openEventObserver: WebsocketEventObserver | undefined = undefined,
+  closeEventObserver: WebsocketEventObserver | undefined = undefined
 ): FactoryProvider => {
   return {
     provide: workerInjectionToken,

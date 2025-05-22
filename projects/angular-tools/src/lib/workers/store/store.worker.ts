@@ -10,7 +10,7 @@ import {
 import {
   EmptyArray,
   EmptyString,
-  OfArrayType,
+  NotOfArrayType,
   OfFunctionType,
   OfObjectType,
   OfStringType
@@ -18,6 +18,8 @@ import {
 import { Map, MapOf } from 'immutable';
 import { Inject, Injectable } from '@angular/core';
 import { STORE_WORKER_INITIAL_STATE } from './store.injection-token';
+import { DeepCopyPrimitive, DeepFreezePrimitive } from '@24vlh/ts-helpers';
+import { SelectOptions } from './store.interface';
 
 /**
  * Represents a class that manages the state of a store.
@@ -43,7 +45,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
       throw new Error('[constructor] Invalid initial state. Object expected.');
     }
 
-    this.state$ = new BehaviorSubject<T>(initialState);
+    this.state$ = new BehaviorSubject<T>(DeepCopyPrimitive(initialState));
     this.data$ = this.state$.asObservable().pipe(distinctUntilChanged());
   }
 
@@ -57,7 +59,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  const state: T = store.state;
    */
   public get state(): T {
-    return this.map.toObject() as T;
+    return DeepFreezePrimitive(this.map.toObject());
   }
 
   /**
@@ -69,7 +71,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  const mappedState: MapOf<T> = store.map;
    */
   public get map(): MapOf<T> {
-    return Map(this.state$.getValue());
+    return Map(DeepCopyPrimitive<T>(this.state$.getValue()));
   }
 
   /**
@@ -84,7 +86,11 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  map$.pipe(map((map: MapOf<T>) => map.toObject())).subscribe((state: T) => console.log(state));
    */
   public get map$(): Observable<MapOf<T>> {
-    return this.data$.pipe(map((state: T) => Map(state)));
+    return this.data$.pipe(
+      map((state: T) =>
+        Map(DeepFreezePrimitive<T>(DeepCopyPrimitive<T>(state)))
+      )
+    );
   }
 
   /**
@@ -172,31 +178,35 @@ export class StoreWorker<T extends Record<string, unknown>> {
    * @template R - The type of the value to retrieve.
    * @template K - The type of the key.
    * @param {K} key - The key to retrieve the value for.
-   * @param {(data: R) => boolean} [filterCallback] - Optional callback function to filter the data stream.
-   * @param {(prev: R, curr: R) => boolean} [comparerCallback] - Optional callback function to compare the previous and current values.
-   * @param {R | undefined} [notSetValue=undefined] - Optional value
-   * to return if the key does not exist in the state.
+   * @param {SelectOptions<R>} [options] - Options for filtering, comparing, and default value.
+   * @typedef {Object} SelectOptions
+   * @property {(data: R) => boolean} [filterCallback] - Optional callback to filter the data stream.
+   * @property {(prev: R, curr: R) => boolean} [comparerCallback] - Optional callback function to compare the previous and current values.
+   * @property {R | undefined} [notSetValue] - Value to return if the key does not exist in the state.
    * @returns {Observable<R | undefined>} - An Observable that emits the value associated with the key,
    * or the optional `notSetValue` if the key does not exist in the state.
    * @example
-   *  const value$: Observable<R | undefined> = store.select$(key).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, notSetValue).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, undefined).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, null).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, 0).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, ``).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, {}).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, []).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, false).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, true).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.select$(key, new Date()).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: undefined }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: null }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: 0 }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: `` }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: {} }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: [] }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: false }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: true }).subscribe(console.log);
+   * const value$: Observable<R | undefined> = store.select$(key, { notSetValue: new Date() }).subscribe(console.log);
    */
   public select$<R, K extends keyof T>(
     key: K,
-    filterCallback?: (data: R) => boolean,
-    comparerCallback?: (prev: R, curr: R) => boolean,
-    notSetValue: R | undefined = undefined
+    options?: SelectOptions<R>
   ): Observable<R | undefined> {
+    const {
+      filterCallback,
+      comparerCallback,
+      notSetValue = undefined
+    } = options ?? {};
     return this.map$.pipe(
       map((mappedState: MapOf<T>) => {
         if (!mappedState.has(key)) {
@@ -231,31 +241,35 @@ export class StoreWorker<T extends Record<string, unknown>> {
    * @template R - The type of the value to retrieve.
    * @param {string | (keyof T)[]} searchKeyPath - The path of the property to search for.
    * An array or a string separated by periods (e.g., 'property1.3.property2').
-   * @param {(data: R) => boolean} [filterCallback] - Optional callback function to filter the data stream.
-   * @param {(prev: R, curr: R) => boolean} [comparerCallback] - Optional callback function to compare the previous and current values.
-   * @param {R | undefined} [notSetValue=undefined] - The value to return
-   * if the search key path does not exist. Defaults to undefined.
+   * @param {SelectOptions<R>} [options] - Options for filtering, comparing, and default value.
+   * @typedef {Object} SelectOptions
+   * @property {(data: R) => boolean} [filterCallback] - Optional callback to filter the data stream.
+   * @property {(prev: R, curr: R) => boolean} [comparerCallback] - Optional callback function to compare the previous and current values.
+   * @property {R | undefined} [notSetValue] - Value to return if the key does not exist in the state.
    * @returns {Observable<R | undefined>} - An Observable that emits the value at the search key path,
    * or the optional `notSetValue` if the path does not exist in the state.
    * @example
    *  const value$: Observable<R | undefined> = store.selectIn$('property1.3.property2').subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$('property1.3.property2', notSetValue).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], undefined).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], null).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], 0).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], ``).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], {}).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], []).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], false).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], true).subscribe(console.log);
-   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], new Date()).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$('property1.3.property2', { notSetValue }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: undefined }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: null }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: 0 }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: `` }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: {} }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: [] }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: false }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: true }).subscribe(console.log);
+   *  const value$: Observable<R | undefined> = store.selectIn$(['property1', 3, 'property2'], { notSetValue: new Date() }).subscribe(console.log);
    */
   public selectIn$<R>(
     searchKeyPath: string | (keyof T)[],
-    filterCallback?: (data: R) => boolean,
-    comparerCallback?: (prev: R, curr: R) => boolean,
-    notSetValue: R | undefined = undefined
+    options?: SelectOptions<R>
   ): Observable<R | undefined> {
+    const {
+      filterCallback,
+      comparerCallback,
+      notSetValue = undefined
+    } = options ?? {};
     return this.map$.pipe(
       map((mappedState: MapOf<T>) => {
         searchKeyPath = this.PrepSearchKeyPath(searchKeyPath);
@@ -306,15 +320,20 @@ export class StoreWorker<T extends Record<string, unknown>> {
       throw new Error(`[set] Key ${String(key)} does not exist in the state.`);
     }
 
-    this.state$.next(this.map.set(key, value).toObject() as T);
+    this.state$.next(
+      DeepFreezePrimitive<T>(
+        this.map.set(key, DeepCopyPrimitive<T[K]>(value)).toObject()
+      )
+    );
   }
 
   /**
    * Updates the value at the specified search key path in the state.
    *
+   * @template R - The type of the value to update.
    * @param {string | (keyof T)[]} searchKeyPath - The path of the property to update.
    * An array or a string separated by periods (e.g., 'property1.3.property2').
-   * @param {unknown} value - The new value to set at the search key path.
+   * @param {R} value - The new value to set at the search key path.
    * @throws {Error} - If the search key path is an empty string or an empty array.
    * @throws {Error} - If the search key path does not exist in the state.
    * @returns {void}
@@ -322,7 +341,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  store.setIn('property1.3.property2', value);
    *  store.setIn(['property1', 3, 'property2'], value);
    */
-  public setIn(searchKeyPath: string | (keyof T)[], value: unknown): void {
+  public setIn<R>(searchKeyPath: string | (keyof T)[], value: R): void {
     searchKeyPath = this.PrepSearchKeyPath(searchKeyPath);
 
     if (EmptyArray(searchKeyPath)) {
@@ -337,7 +356,11 @@ export class StoreWorker<T extends Record<string, unknown>> {
       );
     }
 
-    this.state$.next(this.map.setIn(searchKeyPath, value).toObject() as T);
+    this.state$.next(
+      DeepFreezePrimitive<T>(
+        this.map.setIn(searchKeyPath, DeepCopyPrimitive<R>(value)).toObject()
+      )
+    );
   }
 
   /**
@@ -349,10 +372,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
    * @param {K} key - The key to update the value for.
    * @returns {MonoTypeOperatorFunction<T[K]>} - The operator function that performs the tap update operation.
    * @example
-   *  const update$: MonoTypeOperatorFunction<T[K]> = store._update$('property1');
-   *  const update$: MonoTypeOperatorFunction<T[K]> = store._update$('property1').subscribe(console.log);
-   *  const update$: MonoTypeOperatorFunction<T[K]> = store._update$('property1').pipe(map((data: T[K]) => data)).subscribe(console.log);
-   *  this.http.get('url').pipe(map((data: T) => data), update$).subscribe();
+   *  this.http.get('url').pipe(map((data: T) => data), store._update$('property1')).subscribe();
    */
   public _update$<K extends keyof T>(key: K): MonoTypeOperatorFunction<T[K]> {
     return tap((data: T[K]): void => {
@@ -370,8 +390,9 @@ export class StoreWorker<T extends Record<string, unknown>> {
    * @throws {Error} - If the search key path is an empty string or an empty array.
    * @throws {Error} - If the search key path does not exist in the state.
    * @example
-   *  const updateIn$: MonoTypeOperatorFunction<R> = store._updateIn$('property1.3.property2');
-   *  const updateIn$: MonoTypeOperatorFunction<R> = store._updateIn$(['property1', 3, 'property2']);
+   *  let updateIn$: MonoTypeOperatorFunction<R> = store._updateIn$('property1.3.property2');
+   *  this.http.get('url').pipe(map((data: R) => data), updateIn$).subscribe();
+   *  let updateIn$: MonoTypeOperatorFunction<R> = store._updateIn$(['property1', 3, 'property2']);
    *  this.http.get('url').pipe(map((data: R) => data), updateIn$).subscribe();
    */
   public _updateIn$<R>(searchKeyPath: string): MonoTypeOperatorFunction<R> {
@@ -388,7 +409,9 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  store.reset();
    */
   public reset(): void {
-    this.state$.next(this.initialState);
+    this.state$.next(
+      DeepFreezePrimitive<T>(DeepCopyPrimitive<T>(this.initialState))
+    );
   }
 
   /**
@@ -400,7 +423,7 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  store.resetWithState(state);
    */
   public resetWithState(state: T): void {
-    this.state$.next(state);
+    this.state$.next(DeepFreezePrimitive<T>(DeepCopyPrimitive<T>(state)));
   }
 
   /**
@@ -420,10 +443,10 @@ export class StoreWorker<T extends Record<string, unknown>> {
    *  const searchKeyPath: (keyof T)[] = this.PrepSearchKeyPath({});
    */
   private PrepSearchKeyPath(searchKeyPath: string | (keyof T)[]): (keyof T)[] {
-    return OfStringType(searchKeyPath)
-      ? searchKeyPath.split('.')
-      : !OfArrayType(searchKeyPath)
-        ? []
-        : searchKeyPath;
+    if (OfStringType(searchKeyPath)) {
+      return searchKeyPath.split('.') as (keyof T)[];
+    }
+
+    return NotOfArrayType(searchKeyPath) ? [] : searchKeyPath;
   }
 }

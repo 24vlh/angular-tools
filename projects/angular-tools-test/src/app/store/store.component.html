@@ -67,12 +67,8 @@
         <td><code>object.key2</code></td>
         <td>
           <code>{{
-            (store.selectIn$(
-              'object.key2',
-              undefined,
-              undefined,
-              'path not set'
-            ) | async) || 'null'
+            (store.selectIn$('object.key2', { notSetValue: 'path not set' })
+              | async) || 'null'
           }}</code>
         </td>
       </tr>

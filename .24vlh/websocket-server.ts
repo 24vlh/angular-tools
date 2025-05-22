@@ -1,6 +1,6 @@
-import * as WebSocket from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', (ws: WebSocket): void => {
   ws.on('message', (message: WebSocket.Data): void => {
@@ -9,17 +9,22 @@ wss.on('connection', (ws: WebSocket): void => {
       unknown
     >;
     console.log(`Received message => ${message}`);
+  });
 
-    const response = {
-      type: 'message',
-      content
-    };
+  const response = {
+    type: 'message',
+    content: 'Some random message sent over the websocket'
+  };
 
-    // Delay the echo back by 2 seconds
-    setTimeout((): void => {
-      // Modify the message and send it back
+  // Emit to this client every 2 seconds
+  const interval = setInterval((): void => {
+    if (ws.readyState === ws.OPEN) {
       ws.send(JSON.stringify(response));
-    }, 2000);
+    }
+  }, 2000);
+
+  ws.on('close', () => {
+    clearInterval(interval);
   });
 });
 

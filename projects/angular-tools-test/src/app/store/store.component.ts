@@ -34,7 +34,7 @@ export class StoreComponent {
   }
 
   replaceName(): void {
-    this.store.set<'name'>('name', 'John Doe');
+    this.store.set<'name'>('name', 'John Doe Renamed');
   }
 
   state(): void {

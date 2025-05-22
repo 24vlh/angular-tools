@@ -1,20 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { WebsocketWorker } from './websocket.worker';
-import { Observable, Subject, Subscription } from 'rxjs';
-import {
-  WebSocketSubject,
-  WebSocketSubjectConfig
-} from 'rxjs/internal/observable/dom/WebSocketSubject';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/internal/observable/dom/WebSocketSubject';
 import { webSocket } from 'rxjs/webSocket';
 import { WEBSOCKET_PROVIDER_FACTORY } from './websocket.provider';
 
 describe('WebsocketWorker', (): void => {
   let websocketWorker: WebsocketWorker<unknown>;
   const WEBSOCKET_URL = 'ws://localhost:8080';
-  const websocketConnectionProperty = 'WebsocketConnection';
+  const websocketConnectionProperty = 'websocketConnection';
 
   describe('WebsocketWorker with override provider', (): void => {
-    it('should call openObserver when urlOrWebSocketSubjectConfig is an object with openObserver', (done: DoneFn): void => {
+    it('should call openObserver when webSocketConfig is an object with openObserver', (done: DoneFn): void => {
       const openObserver = {
         next: jasmine.createSpy('next')
       };
@@ -26,7 +23,7 @@ describe('WebsocketWorker', (): void => {
         providers: [WEBSOCKET_PROVIDER_FACTORY(expectedValue)]
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
-      const configs = websocketWorker.UrlOrWebSocketSubjectConfig;
+      const configs = websocketWorker.webSocketConfig;
       (configs as WebSocketSubjectConfig<unknown>)?.openObserver?.next(
         new Event('open')
       );
@@ -35,7 +32,7 @@ describe('WebsocketWorker', (): void => {
       done();
     });
 
-    it('should throw an error when urlOrWebSocketSubjectConfig is neither a string nor an object', (done: DoneFn): void => {
+    it('should throw an error when webSocketConfig is neither a string nor an object', (done: DoneFn): void => {
       const invalidValue = 123;
       const errorMessage = 'Invalid WebSocketSubjectConfig. Object expected.';
       TestBed.configureTestingModule({
@@ -50,7 +47,7 @@ describe('WebsocketWorker', (): void => {
       done();
     });
 
-    it('should throw error when urlOrWebSocketSubjectConfig is not an object', (done: DoneFn): void => {
+    it('should throw error when webSocketConfig is not an object', (done: DoneFn): void => {
       const invalidValue: unknown[] = [1];
       const errorMessage = 'Invalid WebSocketSubjectConfig. Object expected.';
       try {
@@ -85,8 +82,8 @@ describe('WebsocketWorker', (): void => {
         }
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
-      const actualValue: WebSocketSubject<unknown> =
-        websocketWorker.WebsocketConnection;
+      const actualValue: WebSocketSubject<unknown> | undefined =
+        websocketWorker.websocketConnection;
       expect(actualValue).toBe(expectedValue);
       websocketWorker.disconnect();
       done();
@@ -112,8 +109,8 @@ describe('WebsocketWorker', (): void => {
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
       websocketWorker.connect();
-      expect(websocketWorker.WebsocketSubscription).toBeTruthy();
-      expect(websocketWorker.WebsocketSubscription).toBeInstanceOf(
+      expect(websocketWorker.websocketSubscription).toBeTruthy();
+      expect(websocketWorker.websocketSubscription).toBeInstanceOf(
         Subscription
       );
       websocketWorker.disconnect();
@@ -124,21 +121,21 @@ describe('WebsocketWorker', (): void => {
       TestBed.configureTestingModule({
         providers: [WEBSOCKET_PROVIDER_FACTORY(WEBSOCKET_URL)]
       });
-      const expectedValue: Subject<unknown> = new Subject<unknown>();
+      const expectedValue: ReplaySubject<unknown> = new ReplaySubject<unknown>();
       TestBed.overrideProvider(WebsocketWorker, {
         useFactory: () => {
           const websocketWorker: WebsocketWorker<unknown> =
             new WebsocketWorker<unknown>(WEBSOCKET_URL);
           spyOnProperty(
             websocketWorker,
-            'MessagesSubject',
+            'messagesSubject',
             'get'
           ).and.returnValue(expectedValue);
           return websocketWorker;
         }
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
-      const actualValue: Subject<unknown> = websocketWorker.MessagesSubject;
+      const actualValue: ReplaySubject<unknown> = websocketWorker.messagesSubject;
       expect(actualValue).toBe(expectedValue);
       websocketWorker.disconnect();
       done();
@@ -254,7 +251,7 @@ describe('WebsocketWorker', (): void => {
 
     it('should return the string when urlOrWebSocketSubjectConfig is a string', (): void => {
       const actualValue: string | WebSocketSubjectConfig<unknown> =
-        websocketWorker.UrlOrWebSocketSubjectConfig;
+        websocketWorker.webSocketConfig;
       expect(actualValue).toBe(WEBSOCKET_URL);
     });
   });

@@ -20,6 +20,7 @@ export * from './lib/workers/server-sent-event/server-sent-event.provider';
 export * from './lib/workers/server-sent-event/server-sent-event.worker';
 export * from './lib/workers/store/store.helper';
 export * from './lib/workers/store/store.injection-token';
+export * from './lib/workers/store/store.interface';
 export * from './lib/workers/store/store.provider';
 export * from './lib/workers/store/store.worker';
 export * from './lib/workers/subscription/subscription.provider';

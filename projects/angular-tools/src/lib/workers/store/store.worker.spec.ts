@@ -106,7 +106,7 @@ describe('StoreWorker', (): void => {
     const value = 'value';
     service.set(key, value);
     subscription = service
-      .select$(key, (): boolean => true)
+      .select$(key, { filterCallback: (): boolean => true })
       .subscribe((val): void => {
         expect(val).toEqual(value);
         done();
@@ -118,7 +118,7 @@ describe('StoreWorker', (): void => {
     const value = 'value';
     service.set(key, value);
     subscription = service
-      .select$(key, undefined, (): boolean => false)
+      .select$(key, { comparerCallback: (): boolean => false })
       .subscribe((val): void => {
         expect(val).toEqual(value);
         done();
@@ -137,7 +137,7 @@ describe('StoreWorker', (): void => {
     const key = 'nonExistingKey';
     const notSetValue = 'notSetValue';
     subscription = service
-      .select$(key, undefined, undefined, notSetValue)
+      .select$(key, { notSetValue })
       .subscribe((val: string | undefined): void => {
         expect(val).toEqual(notSetValue);
         done();
@@ -159,7 +159,7 @@ describe('StoreWorker', (): void => {
     const value = 'newValue';
     service.setIn(keyPath, value);
     subscription = service
-      .selectIn$(keyPath, (): boolean => true)
+      .selectIn$(keyPath, { filterCallback: (): boolean => true })
       .subscribe((val): void => {
         expect(val).toEqual(value);
         done();
@@ -171,7 +171,7 @@ describe('StoreWorker', (): void => {
     const value = 'newValue';
     service.setIn(keyPath, value);
     subscription = service
-      .selectIn$(keyPath, undefined, (): boolean => true)
+      .selectIn$(keyPath, { comparerCallback: (): boolean => true })
       .subscribe((val): void => {
         expect(val).toEqual(value);
         done();
@@ -190,7 +190,7 @@ describe('StoreWorker', (): void => {
     const keyPath: string[] = ['nonExistingKey1', 'nonExistingKey2'];
     const notSetValue = 'notSetValue';
     subscription = service
-      .selectIn$(keyPath, undefined, undefined, notSetValue)
+      .selectIn$(keyPath, { notSetValue })
       .subscribe((val: string | undefined): void => {
         expect(val).toEqual(notSetValue);
         done();

@@ -9,11 +9,8 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class SubscriptionWorker {
-  private subs: Set<SubscriptionLike> = new Set<SubscriptionLike>();
-  private mappedSubs: Map<string, SubscriptionLike> = new Map<
-    string,
-    SubscriptionLike
-  >();
+  private subs = new Set<SubscriptionLike>();
+  private mappedSubs = new Map<string, SubscriptionLike>();
 
   /**
    * Get subscriptions.
@@ -48,7 +45,7 @@ export class SubscriptionWorker {
    *  // => Sets the subscription to the subs array.
    */
   set sink(sub: SubscriptionLike) {
-    if (this.UnmanagedSubscription(sub)) {
+    if (this.unmanagedSubscription(sub)) {
       this.subs.add(sub);
     }
   }
@@ -64,12 +61,11 @@ export class SubscriptionWorker {
    */
   add(...subs: SubscriptionLike[]): void {
     if (NotEmptyArray(subs)) {
-      this.subs = new Set([
-        ...this.subs,
-        ...subs.filter((sub: SubscriptionLike) => {
-          return this.UnmanagedSubscription(sub);
-        })
-      ]);
+      subs.forEach((sub) => {
+        if (this.unmanagedSubscription(sub)) {
+          this.subs.add(sub);
+        }
+      });
     }
   }
 
@@ -82,9 +78,7 @@ export class SubscriptionWorker {
    *  // => Unsubscribes from all subscriptions.
    */
   unsubscribe(): void {
-    this.subs.forEach((sub: SubscriptionLike): void => {
-      this.Unsubscribe(sub);
-    });
+    this.subs.forEach((sub) => this.unsubscribeOne(sub));
     this.subs.clear();
   }
 
@@ -99,7 +93,7 @@ export class SubscriptionWorker {
    *  // => Maps the subscription to the mappedSubs map.
    */
   map(key: string, sub: SubscriptionLike): void {
-    if (this.UnmappedSubscription(sub)) {
+    if (this.unmappedSubscription(sub)) {
       this.mappedSubs.set(key, sub);
     }
   }
@@ -114,9 +108,9 @@ export class SubscriptionWorker {
    *  // => Unsubscribes from the mapped subscription.
    */
   unsubscribeMapped(key: string): void {
-    const sub: SubscriptionLike | undefined = this.mappedSubs.get(key);
+    const sub = this.mappedSubs.get(key);
     if (sub) {
-      this.Unsubscribe(sub);
+      this.unsubscribeOne(sub);
       this.mappedSubs.delete(key);
     }
   }
@@ -130,9 +124,7 @@ export class SubscriptionWorker {
    *  // => Unsubscribes from all mapped subscriptions.
    */
   unsubscribeAllMapped(): void {
-    this.mappedSubs.forEach((sub: SubscriptionLike): void => {
-      this.Unsubscribe(sub);
-    });
+    this.mappedSubs.forEach((sub) => this.unsubscribeOne(sub));
     this.mappedSubs.clear();
   }
 
@@ -146,9 +138,12 @@ export class SubscriptionWorker {
    *  subscriptionWorker.UnmanagedSubscription(sub);
    *  // => Returns true if the subscription is not managed.
    */
-  UnmanagedSubscription = (sub: unknown): sub is SubscriptionLike => {
-    return this.OfSubscriptionLikeType(sub) && !this.subs.has(sub);
-  };
+  private unmanagedSubscription(sub: unknown): sub is SubscriptionLike {
+    return (
+      this.ofSubscriptionLikeType(sub) &&
+      !this.subs.has(sub as SubscriptionLike)
+    );
+  }
 
   /**
    * Checks if the provided subscription is of type SubscriptionLike.
@@ -159,12 +154,12 @@ export class SubscriptionWorker {
    *  subscriptionWorker.OfSubscriptionLikeType(sub);
    *  // => Returns true if the subscription is of type SubscriptionLike.
    */
-  OfSubscriptionLikeType = (sub: unknown): sub is SubscriptionLike => {
+  private ofSubscriptionLikeType(sub: unknown): sub is SubscriptionLike {
     return (
       OfObjectType<SubscriptionLike>(sub) &&
-      typeof sub.unsubscribe === 'function'
+      typeof (sub as SubscriptionLike).unsubscribe === 'function'
     );
-  };
+  }
 
   /**
    * Checks if the provided subscription is not mapped.
@@ -176,16 +171,12 @@ export class SubscriptionWorker {
    *  subscriptionWorker.UnmappedSubscription(sub);
    *  // => Returns true if the subscription is not mapped.
    */
-  UnmappedSubscription = (sub: unknown): boolean => {
+  private unmappedSubscription(sub: unknown): boolean {
     return (
-      this.OfSubscriptionLikeType(sub) &&
-      Array.from(this.mappedSubs.values()).every(
-        (mappedSub: SubscriptionLike): boolean => {
-          return mappedSub !== sub;
-        }
-      )
+      this.ofSubscriptionLikeType(sub) &&
+      !Array.from(this.mappedSubs.values()).includes(sub as SubscriptionLike)
     );
-  };
+  }
 
   /**
    * Unsubscribe from a subscription.
@@ -193,14 +184,14 @@ export class SubscriptionWorker {
    * @param {SubscriptionLike} sub - The subscription to be unsubscribed.
    * @returns {void}
    * @example
-   *  subscriptionWorkerUnsubscribe(sub);
+   *  subscriptionWorker.Unsubscribe(sub);
    *  // => Unsubscribes from the subscription.
    */
-  private Unsubscribe = (sub: SubscriptionLike): void => {
+  private unsubscribeOne(sub: SubscriptionLike): void {
     try {
       sub.unsubscribe();
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(`Failed to unsubscribe: ${String(error)}`);
     }
-  };
+  }
 }
