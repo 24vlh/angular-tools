@@ -42,7 +42,7 @@
   "dependencies": {
     "@24vlh/ts-assert": "^1.0.16",
     "@24vlh/ts-helpers": "^1.0.7",
-    "@angular/animations": "^19.2.12",
+    "@angular/animations": "^20.0.0",
     "@angular/common": "^19.2.12",
     "@angular/compiler": "^19.2.12",
     "@angular/core": "^19.2.12",
