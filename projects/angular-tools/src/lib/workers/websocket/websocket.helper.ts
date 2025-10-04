@@ -4,10 +4,15 @@ import {
   WebsocketEventObserver,
   WebsocketExponentialBackoffOptions
 } from './websocket.type';
-import { FactoryProvider, InjectionToken } from '@angular/core';
+import { InjectionToken, Provider } from '@angular/core';
+import {
+  WEBSOCKET_CLOSE_HANDLER,
+  WEBSOCKET_OPEN_HANDLER,
+  WEBSOCKET_URL_OR_OPTIONS
+} from './websocket.injection-token';
 
 /**
- * Factory function to create a provider for the websocket worker
+ * Factory function to create a providers array for the websocket worker
  *
  * @template M - The type of the messages.
  * @param {string | WebSocketSubjectConfig<M>} urlOrWebSocketSubjectConfig - The URL or WebSocketSubjectConfig to use for the websocket connection.
@@ -16,35 +21,35 @@ import { FactoryProvider, InjectionToken } from '@angular/core';
  * @param {WebsocketEventObserver | null} openEventObserver - The observer for open events. Optional.
  * @param {WebsocketEventObserver | null} closeEventObserver - The observer for close events. Optional.
  *
- * @returns {FactoryProvider} - The created provider.
+ * @returns {Provider[]} - The created providers array.
  * @example
- *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080')]
+ *  providers: [...WEBSOCKET_PROVIDERS_ARRAY('ws://localhost:8080')]
  *  // => Provides the websocket worker.
  *  // => The websocket worker is used to manage the websocket connection.
  *  const workerInjectionToken = new InjectionToken<WebsocketWorker<M>>('injectionToken');
- *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080', workerInjectionToken)]
+ *  providers: [...WEBSOCKET_PROVIDERS_ARRAY('ws://localhost:8080', workerInjectionToken)]
  *  // => Provides the websocket worker.
  *  // => The websocket worker is used to manage the websocket connection.
  *  const workerInjectionToken = new InjectionToken<WebsocketWorker<M>>('injectionToken');
- *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080', workerInjectionToken, { initialDelay: 1000, maxDelay: 5000 })]
+ *  providers: [...WEBSOCKET_PROVIDERS_ARRAY('ws://localhost:8080', workerInjectionToken, { initialDelay: 1000, maxDelay: 5000 })]
  *  // => Provides the websocket worker.
  *  // => The websocket worker is used to manage the websocket connection.
  *  // => The websocket worker uses exponential backoff with an initial delay of 1000ms and a max delay of 5000ms.
  *  const workerInjectionToken = new InjectionToken<WebsocketWorker<M>>('injectionToken');
- *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080', workerInjectionToken, { initialDelay: 1000, maxDelay: 5000 }, { next: () => console.log('open') }, { next: () => console.log('close') })]
+ *  providers: [...WEBSOCKET_PROVIDERS_ARRAY('ws://localhost:8080', workerInjectionToken, { initialDelay: 1000, maxDelay: 5000 }, { next: () => console.log('open') }, { next: () => console.log('close') })]
  *  // => Provides the websocket worker.
  *  // => The websocket worker is used to manage the websocket connection.
  *  // => The websocket worker uses exponential backoff with an initial delay of 1000ms and a max delay of 5000ms.
  *  // => The websocket worker has an observer for open events that logs 'open'.
  *  // => The websocket worker has an observer for close events that logs 'close'.
  *  const workerInjectionToken = new InjectionToken<WebsocketWorker<M>>('injectionToken');
- *  providers: [WEBSOCKET_PROVIDER_FACTORY('ws://localhost:8080', workerInjectionToken, undefined, { next: () => console.log('open') }, { next: () => console.log('close') })]
+ *  providers: [...WEBSOCKET_PROVIDERS_ARRAY('ws://localhost:8080', workerInjectionToken, undefined, { next: () => console.log('open') }, { next: () => console.log('close') })]
  *  // => Provides the websocket worker.
  *  // => The websocket worker is used to manage the websocket connection.
  *  // => The websocket worker has an observer for open events that logs 'open'.
  *  // => The websocket worker has an observer for close events that logs 'close'.
  */
-export const WEBSOCKET_PROVIDER_FACTORY = <M>(
+export const WEBSOCKET_PROVIDERS_ARRAY = <M>(
   urlOrWebSocketSubjectConfig: string | WebSocketSubjectConfig<M>,
   workerInjectionToken:
     | typeof WebsocketWorker<M>
@@ -54,15 +59,34 @@ export const WEBSOCKET_PROVIDER_FACTORY = <M>(
     | undefined = undefined,
   openEventObserver: WebsocketEventObserver | undefined = undefined,
   closeEventObserver: WebsocketEventObserver | undefined = undefined
-): FactoryProvider => {
-  return {
-    provide: workerInjectionToken,
-    useFactory: () =>
-      new WebsocketWorker<M>(
-        urlOrWebSocketSubjectConfig,
-        exponentialBackoffOptions,
-        openEventObserver,
-        closeEventObserver
-      )
-  };
+): Provider[] => {
+  let arr: Provider[] = [
+    {
+      provide: workerInjectionToken,
+      useClass: WebsocketWorker
+    },
+    {
+      provide: WEBSOCKET_URL_OR_OPTIONS,
+      useValue: urlOrWebSocketSubjectConfig
+    }
+  ];
+  if (openEventObserver) {
+    arr = [
+      ...arr,
+      {
+        provide: WEBSOCKET_OPEN_HANDLER,
+        useValue: openEventObserver
+      }
+    ];
+  }
+  if (closeEventObserver) {
+    arr = [
+      ...arr,
+      {
+        provide: WEBSOCKET_CLOSE_HANDLER,
+        useValue: closeEventObserver
+      }
+    ];
+  }
+  return arr;
 };

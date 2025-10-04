@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import {
-  WEBSOCKET_PROVIDER_FACTORY,
+  WEBSOCKET_PROVIDERS_ARRAY,
   WebsocketWorker
 } from '../../../../angular-tools/src/lib/workers';
 
@@ -10,7 +10,7 @@ import {
   selector: 'app-ws',
   standalone: true,
   providers: [
-    WEBSOCKET_PROVIDER_FACTORY<Record<string, unknown>>('ws://localhost:8080')
+    ...WEBSOCKET_PROVIDERS_ARRAY<Record<string, unknown>>('ws://localhost:8080')
   ],
   imports: [NgIf, NgForOf, NgClass],
   templateUrl: './ws.component.html'
@@ -18,8 +18,10 @@ import {
 export class WsComponent {
   items: Record<string, unknown>[] = [];
   subscription: Subscription | null = null;
+  private ws: WebsocketWorker<Record<string, unknown>> =
+    inject(WebsocketWorker);
 
-  constructor(private ws: WebsocketWorker<Record<string, unknown>>) {}
+  constructor() {}
 
   get connected(): boolean {
     return !this.ws.isDisconnected;

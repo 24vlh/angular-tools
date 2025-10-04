@@ -1,12 +1,8 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   WebSocketSubject,
   WebSocketSubjectConfig
 } from 'rxjs/internal/observable/dom/WebSocketSubject';
-import {
-  WebsocketEventObserver,
-  WebsocketExponentialBackoffOptions
-} from './websocket.type';
 import {
   WEBSOCKET_CLOSE_HANDLER,
   WEBSOCKET_EXPONENTIAL_BACKOFF_OPTIONS,
@@ -41,29 +37,29 @@ export class WebsocketWorker<M> {
   private wsErrorSubject: Subject<unknown> = new Subject<unknown>();
   public wsErrors$: Observable<unknown> = this.wsErrorSubject.asObservable();
 
+  private urlOrWebSocketSubjectConfig = inject(WEBSOCKET_URL_OR_OPTIONS);
+  private exponentialBackoffOptions = inject(
+    WEBSOCKET_EXPONENTIAL_BACKOFF_OPTIONS,
+    { optional: true }
+  );
+  private openEventObserver = inject(WEBSOCKET_OPEN_HANDLER, {
+    optional: true
+  });
+  private closeEventObserver = inject(WEBSOCKET_CLOSE_HANDLER, {
+    optional: true
+  });
+  private readonly queueBatchSize = 50;
+  private readonly queueBatchDelayMs = 100;
+  private messageQueue: M[] = [];
+  private connectionStateSubject = new ReplaySubject<
+    'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error'
+  >(1);
+  public connectionState$ = this.connectionStateSubject.asObservable();
+
   /**
-   * Creates a new WebsocketWorker instance.
-   *
-   * @param {string | WebSocketSubjectConfig<M>} urlOrWebSocketSubjectConfig - The URL or configuration object for the websocket connection.
-   * @param {WebsocketExponentialBackoffOptions | undefined} exponentialBackoffOptions - Optional exponential backoff options.
-   * @param {WebsocketEventObserver | undefined} openEventObserver - Optional observer for websocket open events.
-   * @param {WebsocketEventObserver | undefined} closeEventObserver - Optional observer for websocket close events.
+   * Creates an instance of WebsocketWorker.
    */
-  constructor(
-    @Inject(WEBSOCKET_URL_OR_OPTIONS)
-    private urlOrWebSocketSubjectConfig: string | WebSocketSubjectConfig<M>,
-    @Inject(WEBSOCKET_EXPONENTIAL_BACKOFF_OPTIONS)
-    @Optional()
-    private exponentialBackoffOptions:
-      | WebsocketExponentialBackoffOptions
-      | undefined = undefined,
-    @Inject(WEBSOCKET_OPEN_HANDLER)
-    @Optional()
-    private openEventObserver: WebsocketEventObserver | undefined = undefined,
-    @Inject(WEBSOCKET_CLOSE_HANDLER)
-    @Optional()
-    private closeEventObserver: WebsocketEventObserver | undefined = undefined
-  ) {
+  constructor() {
     this.connect();
   }
 
@@ -149,11 +145,29 @@ export class WebsocketWorker<M> {
    */
   send(data: M): void {
     try {
-      this.websocketConnection?.next(data);
+      if (this.websocketConnection && !this.websocketConnection.closed) {
+        this.websocketConnection.next(data);
+      } else {
+        this.messageQueue.push(data);
+      }
     } catch (e) {
       this.wsErrorSubject.next(e);
       console.error('WebSocket send failed:', e);
     }
+  }
+
+  /**
+   * Sends an authentication payload over the websocket connection.
+   *
+   * @template A - The type of the authentication payload.
+   * @param {A} authPayload - The authentication payload to send.
+   * @returns {void}
+   * @example
+   *  websocketWorker.authenticate({ token: 'my-auth-token' });
+   *  // Sends the authentication payload to the server over the websocket connection.
+   */
+  authenticate<A>(authPayload: A): void {
+    this.send(authPayload as unknown as M);
   }
 
   /**
@@ -232,7 +246,9 @@ export class WebsocketWorker<M> {
    *  // The websocket connection is established if not already connected.
    */
   connect(): void {
+    this.connectionStateSubject.next('connecting');
     if (this.websocketSubscription && !this.websocketSubscription.closed) {
+      this.connectionStateSubject.next('connected');
       return; // Already connected
     }
 
@@ -259,9 +275,21 @@ export class WebsocketWorker<M> {
           ]
         )
       )
-      .subscribe((data: M): void => {
-        this.messagesSubject.next(data);
+      .subscribe({
+        next: (data: M) => {
+          this.connectionStateSubject.next('connected');
+          this.messagesSubject.next(data);
+        },
+        error: (err) => {
+          this.connectionStateSubject.next('error');
+          this.wsErrorSubject.next({ type: 'connection', error: err });
+        },
+        complete: () => {
+          this.connectionStateSubject.next('disconnected');
+        }
       });
+
+    this.flushQueue();
   }
 
   /**
@@ -273,26 +301,40 @@ export class WebsocketWorker<M> {
    *  // The websocket connection is closed and unsubscribed.
    */
   disconnect(): void {
-    if (InstanceOfType(this.websocketSubscription, Subscription)) {
-      this.websocketSubscription.unsubscribe();
-      this.wsSubscription = undefined;
-    } else {
-      console.warn(
-        'WebSocket connection already unsubscribed or not subscribed.'
-      );
+    try {
+      if (InstanceOfType(this.websocketSubscription, Subscription)) {
+        this.websocketSubscription.unsubscribe();
+        this.wsSubscription = undefined;
+      } else {
+        console.warn(
+          'WebSocket connection already unsubscribed or not subscribed.'
+        );
+      }
+    } catch (e) {
+      this.wsErrorSubject.next(e);
+      console.error('WebSocket subscription unsubscribe failed:', e);
     }
 
-    if (
-      InstanceOfType(this.websocketConnection, WebSocketSubject) &&
-      !this.websocketConnection.closed
-    ) {
-      this.websocketConnection.unsubscribe();
-      this.wsConnection = undefined;
-    } else {
-      console.warn('WebSocket connection already closed.');
+    try {
+      if (
+        InstanceOfType(this.websocketConnection, WebSocketSubject) &&
+        !this.websocketConnection.closed
+      ) {
+        this.websocketConnection.unsubscribe();
+        this.wsConnection = undefined;
+      } else {
+        console.warn('WebSocket connection already closed.');
+      }
+    } catch (e) {
+      this.wsErrorSubject.next(e);
+      console.error('WebSocket connection close failed:', e);
     }
 
-    this.wsMessagesSubject.complete();
+    if (!this.wsMessagesSubject.closed) {
+      this.wsMessagesSubject.complete();
+    }
+
+    this.connectionStateSubject.next('disconnected');
   }
 
   /**
@@ -304,8 +346,34 @@ export class WebsocketWorker<M> {
    *  // The websocket connection is closed and then re-established.
    */
   reconnect(): void {
+    this.connectionStateSubject.next('reconnecting');
     this.disconnect();
     this.connect();
+  }
+
+  /**
+   * Flushes the message queue by sending messages in batches with a delay between batches.
+   *
+   * @returns {Promise<void>} A promise that resolves when the queue is flushed.
+   * @example
+   *  await websocketWorker.flushQueue();
+   *  // All queued messages are sent over the websocket connection.
+   * @private
+   */
+  private async flushQueue(): Promise<void> {
+    while (
+      this.messageQueue.length &&
+      this.websocketConnection &&
+      !this.websocketConnection.closed
+    ) {
+      const batch = this.messageQueue.splice(0, this.queueBatchSize);
+      for (const msg of batch) {
+        this.websocketConnection.next(msg);
+      }
+      if (this.messageQueue.length) {
+        await new Promise((res) => setTimeout(res, this.queueBatchDelayMs));
+      }
+    }
   }
 
   /**
@@ -339,6 +407,6 @@ export class WebsocketWorker<M> {
         openObserver?.next?.(event);
       }
     };
-    return config;
+    return config as WebSocketSubjectConfig<M>;
   }
 }

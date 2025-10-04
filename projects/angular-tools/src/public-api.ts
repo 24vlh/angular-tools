@@ -25,7 +25,7 @@ export * from './lib/workers/store/store.provider';
 export * from './lib/workers/store/store.worker';
 export * from './lib/workers/subscription/subscription.provider';
 export * from './lib/workers/subscription/subscription.worker';
+export * from './lib/workers/websocket/websocket.helper';
 export * from './lib/workers/websocket/websocket.injection-token';
-export * from './lib/workers/websocket/websocket.provider';
 export * from './lib/workers/websocket/websocket.type';
 export * from './lib/workers/websocket/websocket.worker';

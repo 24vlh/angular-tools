@@ -3,7 +3,7 @@ import { WebsocketWorker } from './websocket.worker';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/internal/observable/dom/WebSocketSubject';
 import { webSocket } from 'rxjs/webSocket';
-import { WEBSOCKET_PROVIDER_FACTORY } from './websocket.provider';
+import { WEBSOCKET_PROVIDERS_ARRAY } from './websocket.helper';
 
 describe('WebsocketWorker', (): void => {
   let websocketWorker: WebsocketWorker<unknown>;
@@ -20,7 +20,7 @@ describe('WebsocketWorker', (): void => {
         openObserver
       };
       TestBed.configureTestingModule({
-        providers: [WEBSOCKET_PROVIDER_FACTORY(expectedValue)]
+        providers: [...WEBSOCKET_PROVIDERS_ARRAY(expectedValue)]
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
       const configs = websocketWorker.webSocketConfig;
@@ -37,7 +37,7 @@ describe('WebsocketWorker', (): void => {
       const errorMessage = 'Invalid WebSocketSubjectConfig. Object expected.';
       TestBed.configureTestingModule({
         providers: [
-          WEBSOCKET_PROVIDER_FACTORY(invalidValue as unknown as string)
+          ...WEBSOCKET_PROVIDERS_ARRAY(invalidValue as unknown as string)
         ]
       });
 
@@ -53,7 +53,7 @@ describe('WebsocketWorker', (): void => {
       try {
         TestBed.configureTestingModule({
           providers: [
-            WEBSOCKET_PROVIDER_FACTORY(invalidValue as unknown as string)
+            ...WEBSOCKET_PROVIDERS_ARRAY(invalidValue as unknown as string)
           ]
         });
         websocketWorker = TestBed.inject(WebsocketWorker);
@@ -65,14 +65,14 @@ describe('WebsocketWorker', (): void => {
 
     it('should return the correct value when WebsocketConnection$ is called', (done: DoneFn): void => {
       TestBed.configureTestingModule({
-        providers: [WEBSOCKET_PROVIDER_FACTORY(WEBSOCKET_URL)]
+        providers: [...WEBSOCKET_PROVIDERS_ARRAY(WEBSOCKET_URL)]
       });
       const expectedValue: WebSocketSubject<unknown> =
         webSocket<unknown>(WEBSOCKET_URL);
       TestBed.overrideProvider(WebsocketWorker, {
         useFactory: () => {
           const websocketWorker: WebsocketWorker<unknown> =
-            new WebsocketWorker<unknown>(WEBSOCKET_URL);
+            new WebsocketWorker<unknown>();
           spyOnProperty(
             websocketWorker,
             websocketConnectionProperty,
@@ -91,14 +91,14 @@ describe('WebsocketWorker', (): void => {
 
     it('should return a Subscription object when WebsocketSubscription$ is called after connect', (done: DoneFn): void => {
       TestBed.configureTestingModule({
-        providers: [WEBSOCKET_PROVIDER_FACTORY(WEBSOCKET_URL)]
+        providers: [...WEBSOCKET_PROVIDERS_ARRAY(WEBSOCKET_URL)]
       });
       const expectedValue: WebSocketSubject<unknown> =
         webSocket<unknown>(WEBSOCKET_URL);
       TestBed.overrideProvider(WebsocketWorker, {
         useFactory: () => {
           const websocketWorker: WebsocketWorker<unknown> =
-            new WebsocketWorker<unknown>(WEBSOCKET_URL);
+            new WebsocketWorker<unknown>();
           spyOnProperty(
             websocketWorker,
             websocketConnectionProperty,
@@ -119,13 +119,13 @@ describe('WebsocketWorker', (): void => {
 
     it('should return the correct Subject when MessagesConnection$ is accessed', (done: DoneFn): void => {
       TestBed.configureTestingModule({
-        providers: [WEBSOCKET_PROVIDER_FACTORY(WEBSOCKET_URL)]
+        providers: [...WEBSOCKET_PROVIDERS_ARRAY(WEBSOCKET_URL)]
       });
       const expectedValue: ReplaySubject<unknown> = new ReplaySubject<unknown>();
       TestBed.overrideProvider(WebsocketWorker, {
         useFactory: () => {
           const websocketWorker: WebsocketWorker<unknown> =
-            new WebsocketWorker<unknown>(WEBSOCKET_URL);
+            new WebsocketWorker<unknown>();
           spyOnProperty(
             websocketWorker,
             'messagesSubject',
@@ -143,7 +143,7 @@ describe('WebsocketWorker', (): void => {
 
     it('should close a connection when disconnect is called', (done: DoneFn): void => {
       TestBed.configureTestingModule({
-        providers: [WEBSOCKET_PROVIDER_FACTORY(WEBSOCKET_URL)]
+        providers: [...WEBSOCKET_PROVIDERS_ARRAY(WEBSOCKET_URL)]
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
       const websocketSpy: jasmine.Spy<() => void> = spyOn(
@@ -159,7 +159,7 @@ describe('WebsocketWorker', (): void => {
   describe('WebsocketWorker with default injector', (): void => {
     beforeEach((): void => {
       TestBed.configureTestingModule({
-        providers: [WEBSOCKET_PROVIDER_FACTORY(WEBSOCKET_URL)]
+        providers: [...WEBSOCKET_PROVIDERS_ARRAY(WEBSOCKET_URL)]
       });
       websocketWorker = TestBed.inject(WebsocketWorker);
     });
