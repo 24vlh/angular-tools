@@ -280,7 +280,7 @@ export class WebsocketWorker<M> {
           this.connectionStateSubject.next('connected');
           this.messagesSubject.next(data);
         },
-        error: (err) => {
+        error: (err: unknown) => {
           this.connectionStateSubject.next('error');
           this.wsErrorSubject.next({ type: 'connection', error: err });
         },
@@ -289,7 +289,7 @@ export class WebsocketWorker<M> {
         }
       });
 
-    this.flushQueue();
+    void this.flushQueue();
   }
 
   /**
