@@ -4,6 +4,7 @@
   "description": "Small footprint library for Angular projects.",
   "author": "@vlah.io",
   "license": "Apache-2.0",
+  "packageManager": "pnpm@10.30.1",
   "keywords": [
     "angular library",
     "angular redux store",
@@ -12,24 +13,25 @@
   ],
   "scripts": {
     "build:angular-tools": "ng build angular-tools",
-    "docs": "npx compodoc -p projects/angular-tools/tsconfig.lib.json -d documentation -s",
+    "docs": "pnpm exec compodoc -p projects/angular-tools/tsconfig.lib.json -d documentation -s",
+    "ensure:test-browser": "node ./karma.browser.install.js",
     "index:refresh:angular-tools": "node ./.24vlh/scan.js && git add ./projects/angular-tools/src/public-api.ts",
-    "lint:angular-tools": "npx eslint projects/angular-tools/src/**/*.{ts,html} --fix",
+    "lint:angular-tools": "pnpm exec eslint projects/angular-tools/src/**/*.{ts,html} --fix",
     "ng": "ng",
     "prepare": "husky",
-    "prettify:angular-tools": "npx prettier projects/angular-tools/src/**/*.{ts,html} --write",
+    "prettify:angular-tools": "pnpm exec prettier projects/angular-tools/src/**/*.{ts,html} --write",
     "start": "ng serve --poll=1000",
     "start:http": "ts-node .24vlh/http-server.ts",
     "start:sse": "ts-node .24vlh/server-sent-event-server.ts",
     "start:ws": "ts-node .24vlh/websocket-server.ts",
-    "stylefy:angular-tools": "npx stylelint projects/angular-tools/src/**/*.{css,scss} --fix",
-    "test:angular-tools": "ng test angular-tools --code-coverage ",
-    "test:angular-tools-test-app": "ng test angular-tools-test",
+    "stylefy:angular-tools": "pnpm exec stylelint projects/angular-tools/src/**/*.{css,scss} --fix",
+    "test:angular-tools": "pnpm run ensure:test-browser && ng test angular-tools --code-coverage ",
+    "test:angular-tools-test-app": "pnpm run ensure:test-browser && ng test angular-tools-test",
     "watch": "ng build --watch --configuration development"
   },
   "lint-staged": {
     "*": [
-      "npm run index:refresh:angular-tools"
+      "pnpm run index:refresh:angular-tools"
     ],
     "projects/**/*.{ts,html}": [
       "eslint --fix",

@@ -1,2 +1,2 @@
-npx lint-staged
-npm run test:angular-tools
+pnpm exec lint-staged
+pnpm run test:angular-tools

@@ -12,44 +12,130 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    permissions:
+      contents: read
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - run: npm ci
-      - run: npm run test:angular-tools
-      - run: npm run build:angular-tools
-
-      - name: Copy README and LICENSE
+      - name: Resolve pnpm version from packageManager
+        id: pnpm-version
         run: |
-          cp README.md dist/angular-tools/
-          cp LICENSE dist/angular-tools/
+          PM=$(node -p "require('./package.json').packageManager || ''")
+          if [ -z "$PM" ]; then
+            echo "package.json is missing packageManager"
+            exit 1
+          fi
+          echo "version=${PM#pnpm@}" >> "$GITHUB_OUTPUT"
 
-      - name: Upload build output
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.pnpm-version.outputs.version }}
+
+      - name: Setup Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          pnpm --version
+          "$CHROME_BIN" --version
+        env:
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm run test:angular-tools
+        env:
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+      - name: Build package
+        run: pnpm run build:angular-tools
+
+      - name: Prepare publish directory
+        run: |
+          rm -rf publish artifacts smoke
+          mkdir -p publish
+          cp -R dist/angular-tools/* publish/
+          cp README.md publish/ || true
+          cp LICENSE publish/ || true
+
+      - name: Verify publish integrity
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('publish/package.json', 'utf8'));
+            if (!pkg.name || !pkg.version) {
+              throw new Error('publish/package.json is missing name/version');
+            }
+            const keys = ['main', 'module', 'types'];
+            for (const key of keys) {
+              if (pkg[key] && !fs.existsSync('publish/' + pkg[key])) {
+                throw new Error('Missing publish artifact: ' + key + ' => ' + pkg[key]);
+              }
+            }
+            if (!pkg.main && !pkg.module && !pkg.exports) {
+              throw new Error('package.json must include main/module/exports');
+            }
+            console.log('Publish integrity verification passed');
+          "
+
+      - name: Pack tarball
+        run: |
+          mkdir -p artifacts
+          cd publish
+          pnpm pack --pack-destination ../artifacts
+
+      - name: Tarball smoke install check
+        run: |
+          mkdir -p smoke
+          cd smoke
+          printf '{\n  "name": "smoke",\n  "private": true\n}\n' > package.json
+          pnpm add ../artifacts/*.tgz
+          node -e "const p = require('@24vlh/angular-tools/package.json'); console.log('Installed:', p.name, p.version);"
+
+      - name: Upload publish artifact
         uses: actions/upload-artifact@v4
         with:
-          name: angular-tools-dist
-          path: dist/angular-tools/
+          name: angular-tools-publish
+          path: publish/
 
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: angular-tools-dist
-          path: dist/angular-tools
+    permissions:
+      id-token: write
+      contents: read
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Download publish artifact
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
+          name: angular-tools-publish
+          path: publish/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
           registry-url: https://registry.npmjs.org/
 
-      - name: Update npm for trusted publishing
-        run: npm install -g npm@latest
+      - name: Show tool versions (publish job)
+        run: |
+          node --version
+          npm --version
 
-      - run: npm publish --access public
-        working-directory: dist/angular-tools
+      - name: Publish to npm (trusted publishing)
+        run: npm publish --access public --provenance
+        working-directory: publish

@@ -1,6 +1,10 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+const { applyKarmaBrowserEnvironment } = require('../../karma.browser');
+
+const browserExecutablePath = applyKarmaBrowserEnvironment();
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -38,14 +42,14 @@ module.exports = function (config) {
     browsers: ['ChromiumHeadless'],
     customLaunchers: {
       ChromiumHeadless: {
-        base: 'Chrome',
+        base: 'ChromeHeadless',
         flags: [
           '--no-sandbox',
           '--headless',
           '--disable-gpu',
           '--window-size=1280,1024'
         ],
-        executablePath: process.env.EDGE_BIN
+        ...(browserExecutablePath ? { executablePath: browserExecutablePath } : {})
       }
     },
     singleRun: true,

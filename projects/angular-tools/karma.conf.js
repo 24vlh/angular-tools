@@ -1,6 +1,10 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+const { applyKarmaBrowserEnvironment } = require('../../karma.browser');
+
+const browserExecutablePath = applyKarmaBrowserEnvironment();
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -54,7 +58,8 @@ module.exports = function (config) {
           '--disable-dev-shm-usage',
           '--code-coverage',
           '--remote-debugging-port=9222'
-        ]
+        ],
+        ...(browserExecutablePath ? { executablePath: browserExecutablePath } : {})
       }
     },
     singleRun: true,
