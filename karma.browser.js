@@ -118,8 +118,8 @@ function resolveFromLinux() {
 
 function resolveKarmaBrowser() {
   return resolveFromEnvironment()
-    || resolveFromPuppeteer()
     || (process.platform === 'win32' ? resolveFromWindows() : resolveFromLinux())
+    || resolveFromPuppeteer()
     || (process.platform === 'linux' ? resolveFromWslWindows() : null);
 }
 
