@@ -19,7 +19,7 @@ export default [
 
       parserOptions: {
         tsconfigRootDir:
-          '/mnt/w/public_html/24vlh/angular-tools/projects/angular-tools-test',
+          '/public_html/24vlh/angular-tools/projects/angular-tools-test',
         project: ['tsconfig.app.json', 'tsconfig.spec.json'],
         createDefaultProgram: true
       }
